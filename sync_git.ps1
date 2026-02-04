@@ -36,13 +36,18 @@ else {
 
 # Push to remote
 Write-Host "Pushing to GitHub..."
-git push origin master 2>&1 | ForEach-Object { 
-    if ($_ -match "src refspec master does not match any") {
-        # Fallback to main if master doesn't exist (common new default)
-        Write-Warning "Master branch not found, trying 'main'..."
-        git push origin main
-    }
-    else {
-        Write-Host $_
-    }
+Write-Host "Opening a new window for 'git push'. Please check for a new terminal window to sign in..."
+
+# Push master (or main) in a new window to allow credential entry
+$proc = Start-Process "git" -ArgumentList "push origin master" -PassThru -Wait
+
+if ($proc.ExitCode -ne 0) {
+    Write-Warning "First push attempt failed (Auth failed or branch mismatch)."
+    Write-Warning "Trying to push 'master' to 'main' in case of naming convention mismatch..."
+    
+    # Try pushing local master to remote main
+    Start-Process "git" -ArgumentList "push origin master:main" -Wait
+}
+else {
+    Write-Host "Push operation completed."
 }
