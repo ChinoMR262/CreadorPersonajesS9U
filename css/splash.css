@@ -1,0 +1,117 @@
+/* ============================================================ 
+   SPLASH SCREEN RESTORATION (S9U)
+   Comentario: estilos para pantalla splash y layout responsivo.
+   ============================================================ */
+#splashScreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 99999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+#splashScreen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.splash-line {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 700;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    background-image: linear-gradient(to right, #fff, #3b82f6, #fff);
+    background-size: 200% auto;
+    animation: shine 3s linear infinite;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 1s forwards;
+}
+
+.sl-1 {
+    animation-delay: 0.2s;
+}
+
+.sl-2 {
+    animation-delay: 0.5s;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+.sl-3 {
+    animation-delay: 0.8s;
+}
+
+.splash-sign {
+    margin-top: 20px;
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.5rem;
+    color: var(--primary, #3b82f6);
+    opacity: 0;
+    animation: fadeIn 1s forwards 1.2s;
+}
+
+.splash-copy {
+    position: absolute;
+    bottom: 20px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    opacity: 0;
+    animation: fadeIn 1s forwards 1.5s;
+}
+
+/* Animaciones */
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes shine {
+    to {
+        background-position: 200% center;
+    }
+}
+
+/* ============================================================ 
+   CORRECCIONES DE DISEÑO (S9U)
+   - Asegurar que la barra lateral quede a la derecha en escritorio
+   ============================================================ */
+#mainGrid {
+    grid-template-columns: 1fr;
+    /* Móvil por defecto */
+}
+
+@media (min-width: 1024px) {
+    #mainGrid {
+        grid-template-columns: 1fr 340px !important;
+        /* Forzar ancho de barra lateral */
+        align-items: start;
+    }
+}
