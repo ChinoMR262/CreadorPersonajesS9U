@@ -5,6 +5,29 @@
     - Componentes: panel glass, inputs, chips, acordeones, progreso, etc.
     Nota: Se agregan comentarios para mantenimiento y lectura del proyecto.
     ===================================================================== */
+    /* Comentario: Variables para el "Notch" y áreas seguras de móviles. */
+    :root {
+      --sat: env(safe-area-inset-top);
+      --sab: env(safe-area-inset-bottom);
+      --sal: env(safe-area-inset-left);
+      --sar: env(safe-area-inset-right);
+    }
+
+    body {
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      width: 100vw;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      overflow-x: hidden;
+      margin: 0;
+      padding-top: var(--sat);
+      padding-bottom: var(--sab);
+      padding-left: var(--sal);
+      padding-right: var(--sar);
+    }
+
     * {
       box-sizing: border-box;
     }
@@ -1710,6 +1733,20 @@
       opacity: 0;
       pointer-events: none;
       transition: all .3s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    @media (max-width: 480px) {
+      .settings-panel {
+        right: 16px;
+        left: 16px;
+        width: auto;
+        bottom: 80px;
+      }
+
+      .gear-btn {
+        right: 16px;
+        bottom: 16px;
+      }
     }
 
     .settings-panel.open {

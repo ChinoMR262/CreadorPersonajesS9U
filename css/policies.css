@@ -190,3 +190,109 @@ li::before {
 .footer-separator {
     opacity: 0.3;
 }
+
+/* ============================================================ 
+   THEME ADAPTATION
+   ============================================================ */
+
+/* Role Modes */
+body.villain-mode {
+    --primary: #ef4444;
+    --accent: #fb7185;
+    --glow: rgba(239, 68, 68, 0.35);
+    --border: rgba(239, 68, 68, 0.3);
+}
+
+body.hero-mode {
+    --primary: #38bdf8;
+    --accent: #7dd3fc;
+    --glow: rgba(56, 189, 248, 0.38);
+    --border: rgba(56, 189, 248, 0.3);
+}
+
+body.antihero-mode {
+    --primary: #a78bfa;
+    --accent: #c4b5fd;
+    --glow: rgba(167, 139, 250, 0.35);
+    --border: rgba(167, 139, 250, 0.3);
+}
+
+body.gold-mode,
+body.gold-mode.villain-mode,
+body.gold-mode.hero-mode,
+body.gold-mode.antihero-mode {
+    --primary: #ffd700;
+    --accent: #ffeb3b;
+    --glow: rgba(255, 215, 0, 0.6);
+    --border: rgba(255, 215, 0, 0.4);
+}
+
+body.god-mode,
+body.god-mode.villain-mode,
+body.god-mode.hero-mode,
+body.god-mode.antihero-mode,
+body.god-mode.gold-mode {
+    --primary: #ffffff;
+    --accent: #f0f8ff;
+    --glow: rgba(255, 255, 255, 0.75);
+    --border: rgba(255, 255, 255, 0.5);
+    --text: #f0f8ff;
+}
+
+/* Light Mode */
+body.light-mode {
+    --text: #0f172a;
+    --primary: #0ea5e9;
+    --accent: #38bdf8;
+    --bg-deep: #f1f5f9;
+    --glass: rgba(255, 255, 255, 0.75);
+    --border: rgba(203, 213, 225, 0.8);
+    --glow: rgba(14, 165, 233, 0.25);
+    background-color: var(--bg-deep);
+    background-image:
+        radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.8) 0%, rgba(224, 242, 254, 0.5) 40%, transparent 80%),
+        linear-gradient(to bottom, #f1f5f9 0%, #cbd5e1 100%);
+    color: var(--text);
+}
+
+body.light-mode .policy-content {
+    background: var(--glass);
+    box-shadow: 0 10px 30px rgba(148, 163, 184, 0.2);
+    border-color: var(--border);
+}
+
+body.light-mode .main-title,
+body.light-mode strong {
+    color: #0f172a;
+    text-shadow: none;
+}
+
+body.light-mode p,
+body.light-mode li {
+    color: #334155;
+}
+
+body.light-mode .action-btn {
+    background: rgba(255, 255, 255, 0.6);
+    color: #0284c7;
+    border-color: #cbd5e1;
+}
+
+body.light-mode .action-btn:hover {
+    background: #fff;
+    color: #0ea5e9;
+    border-color: #0ea5e9;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.2);
+}
+
+body.light-mode .footer-nav {
+    border-top-color: #cbd5e1;
+}
+
+body.light-mode .footer-nav a {
+    color: #64748b;
+}
+
+body.light-mode .footer-nav a:hover {
+    color: #0ea5e9;
+}
