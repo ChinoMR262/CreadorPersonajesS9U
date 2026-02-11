@@ -1,0 +1,652 @@
+:root {
+    --bg-dark: #0a0e14;
+    --ui-panel: #11161d;
+    --ui-border: #2a3b4c;
+    --text-main: #e0e6ed;
+    --text-muted: #94a3b8;
+    --celestial-gold: #d4a855;
+    --water-foam: #b0c4de;
+    --deep-blue: #0f172a;
+    --accent-red: #ef4444;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+    /* App-like feel */
+    height: 100vh;
+}
+
+.app {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+}
+
+/* --- EDITOR PANE (Left) --- */
+.editor-pane {
+    width: 450px;
+    background: var(--ui-panel);
+    border-right: 1px solid var(--ui-border);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    flex-shrink: 0;
+    z-index: 10;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.editor-header {
+    padding: 20px;
+    border-bottom: 1px solid var(--ui-border);
+    background: rgba(17, 22, 29, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(5px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.editor-header h2 {
+    font-family: 'Cinzel', serif;
+    color: var(--celestial-gold);
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.editor-content {
+    padding: 20px;
+    padding-bottom: 80px;
+}
+
+/* Collapsible Sections */
+.collapsible-section {
+    margin-bottom: 10px;
+    border: 1px solid var(--ui-border);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.02);
+    overflow: hidden;
+}
+
+.collapsible-header {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    color: var(--water-foam);
+    transition: background 0.2s;
+}
+
+.collapsible-header:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--celestial-gold);
+}
+
+.collapsible-content {
+    padding: 15px;
+    display: none;
+    /* Hidden by default */
+    border-top: 1px solid var(--ui-border);
+}
+
+.collapsible-section.open .collapsible-content {
+    display: block;
+}
+
+.collapsible-section.open .collapsible-header i {
+    transform: rotate(180deg);
+}
+
+/* Forms */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+    width: 100%;
+    padding: 8px 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--ui-border);
+    border-radius: 4px;
+    color: var(--text-main);
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--celestial-gold);
+    outline: none;
+}
+
+textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+textarea.tall {
+    min-height: 100px;
+}
+
+textarea.super-tall {
+    min-height: 200px;
+}
+
+/* Grid for stats */
+.attr-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    background: var(--ui-border);
+    color: var(--text-main);
+    cursor: pointer;
+    font-family: 'Cinzel', serif;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.btn:hover {
+    background: var(--text-muted);
+    color: var(--bg-dark);
+}
+
+.btn-primary {
+    background: var(--celestial-gold);
+    color: #000;
+}
+
+.btn-primary:hover {
+    background: #e5b965;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+}
+
+.btn-secondary:hover {
+    background: var(--accent-red);
+    color: #fff;
+}
+
+.btn-export {
+    width: 100%;
+    margin-bottom: 10px;
+    background: var(--deep-blue);
+    border: 1px solid var(--water-foam);
+    color: var(--water-foam);
+}
+
+.btn-export:hover {
+    background: var(--water-foam);
+    color: var(--deep-blue);
+}
+
+.btn-small {
+    font-size: 0.8rem;
+    padding: 4px 8px;
+}
+
+/* Remove Relation Btn */
+.btn-remove {
+    color: var(--accent-red);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.rel-row {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    align-items: center;
+}
+
+/* Credits footer in editor */
+.credits {
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    opacity: 0.5;
+}
+
+/* --- PREVIEW PANE (Right) --- */
+.preview-pane {
+    flex-grow: 1;
+    background: radial-gradient(circle at center, #1a2332 0%, #0a0e14 100%);
+    overflow-y: auto;
+    padding: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    /* Start from top */
+}
+
+/* Character Sheet Paper Style */
+.ficha-container {
+    width: 100%;
+    max-width: 900px;
+    background: #fff;
+    /* White paper base for printing contrast, or parchment? Let's go High-Tech/Magic Dark */
+    background: linear-gradient(135deg, #10141a 0%, #080a0d 100%);
+    border: 2px solid var(--celestial-gold);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.7), inset 0 0 100px rgba(0, 0, 0, 0.8);
+    position: relative;
+    color: #cbd5e1;
+    font-family: 'Lato', sans-serif;
+    min-height: 1200px;
+    /* A4 Proportions approx */
+    overflow: hidden;
+    /* For watermarks */
+}
+
+/* Decorative Corners */
+.ficha-container::before,
+.ficha-container::after {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border: 2px solid var(--celestial-gold);
+    pointer-events: none;
+    transition: all 0.5s;
+}
+
+.ficha-container::before {
+    top: 10px;
+    left: 10px;
+    border-right: none;
+    border-bottom: none;
+}
+
+.ficha-container::after {
+    bottom: 10px;
+    right: 10px;
+    border-left: none;
+    border-top: none;
+}
+
+/* Header */
+.ficha-header {
+    padding: 50px;
+    text-align: center;
+    border-bottom: 2px double var(--ui-border);
+    position: relative;
+    background: linear-gradient(180deg, rgba(212, 168, 85, 0.05) 0%, transparent 100%);
+}
+
+.hero-title {
+    font-family: 'Cinzel', serif;
+    font-size: 3rem;
+    color: var(--celestial-gold);
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 20px rgba(212, 168, 85, 0.2);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--water-foam);
+    font-weight: 300;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.hero-meta {
+    margin-top: 15px;
+    font-family: 'Cinzel', serif;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Body Content */
+.ficha-body {
+    padding: 50px;
+}
+
+.section {
+    margin-bottom: 40px;
+    position: relative;
+}
+
+.section-title {
+    font-family: 'Cinzel', serif;
+    color: var(--water-foam);
+    border-bottom: 1px solid var(--ui-border);
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-title::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 2px;
+    background: var(--celestial-gold);
+}
+
+/* Data Grids in Preview */
+.data-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.data-item {
+    font-size: 1.1rem;
+}
+
+.data-item strong {
+    color: var(--celestial-gold);
+    font-weight: normal;
+}
+
+/* Quote Box */
+.quote-box {
+    margin-top: 20px;
+    padding: 15px;
+    border-left: 3px solid var(--celestial-gold);
+    background: rgba(255, 255, 255, 0.02);
+    font-style: italic;
+    color: var(--text-muted);
+}
+
+/* Stats Hexagon (CSS Representation) */
+.stats-hex-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.stat-box {
+    width: 70px;
+    height: 80px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 100 115" xmlns="http://www.w3.org/2000/svg"><path d="M50 0 L100 25 L100 85 L50 110 L0 85 L0 25 Z" fill="none" stroke="%232a3b4c" stroke-width="2"/></svg>') no-repeat center;
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.stat-val {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--celestial-gold);
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    margin-top: -5px;
+}
+
+/* Text Blocks */
+.text-block h4 {
+    color: var(--water-foam);
+    margin-bottom: 5px;
+    margin-top: 15px;
+    border-bottom: 1px dashed var(--ui-border);
+    display: inline-block;
+}
+
+.text-block p {
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: #e2e8f0;
+    white-space: pre-wrap;
+    /* Preserve line breaks */
+}
+
+/* Tables */
+.appearance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.appearance-table td {
+    padding: 8px;
+    border-bottom: 1px solid var(--ui-border);
+}
+
+.label-cell {
+    color: var(--text-muted);
+    width: 30%;
+}
+
+.value-cell {
+    color: var(--text-main);
+    text-align: right;
+}
+
+.section-subtitle {
+    margin-top: 25px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    color: var(--water-foam);
+}
+
+/* Prophecy Box */
+.prophecy-box {
+    border: 1px solid rgba(212, 168, 85, 0.3);
+    padding: 20px;
+    background: radial-gradient(circle at center, rgba(212, 168, 85, 0.05) 0%, transparent 100%);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.prophecy-title {
+    color: var(--celestial-gold);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+}
+
+.prophecy-text {
+    font-family: 'Cinzel', serif;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.8;
+}
+
+/* Summary Box */
+.summary-box {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid var(--water-foam);
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    margin-top: 80px;
+    padding-top: 20px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--ui-border) 50%, transparent 100%);
+    margin-bottom: 10px;
+}
+
+/* ========================================= */
+/* THEMES (COLORES POR ROL) */
+/* ========================================= */
+
+/* Villain Theme (Dark Red & Obsidian) */
+.theme-villain {
+    border-color: #7f1d1d;
+    /* Dark Red */
+    background: linear-gradient(135deg, #0f0505 0%, #1a0a0a 100%);
+}
+
+.theme-villain::before,
+.theme-villain::after {
+    border-color: #ef4444;
+    /* Bright Red */
+}
+
+.theme-villain .hero-title {
+    color: #ef4444;
+    text-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.theme-villain .hero-subtitle,
+.theme-villain .section-title {
+    color: #991b1b;
+}
+
+.theme-villain .data-item strong,
+.theme-villain .stat-val {
+    color: #ef4444;
+}
+
+.theme-villain .section-title::after {
+    background: #ef4444;
+}
+
+/* Hero Theme (Gold & Light Blue - Standard but brighter) */
+.theme-hero {
+    border-color: #d4a855;
+    background: linear-gradient(135deg, #10141a 0%, #080a0d 100%);
+}
+
+.theme-hero .hero-title {
+    color: #ffd700;
+    text-shadow: 0 0 25px rgba(255, 215, 0, 0.5);
+}
+
+/* AntiHero Theme (Purple & Grey) */
+.theme-antihero {
+    border-color: #6b21a8;
+    /* Purple */
+    background: linear-gradient(135deg, #1a1025 0%, #0f0a14 100%);
+}
+
+.theme-antihero::before,
+.theme-antihero::after {
+    border-color: #a855f7;
+    /* Light Purple */
+}
+
+.theme-antihero .hero-title {
+    color: #d8b4fe;
+    text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+
+.theme-antihero .hero-subtitle,
+.theme-antihero .section-title {
+    color: #c084fc;
+}
+
+.theme-antihero .data-item strong,
+.theme-antihero .stat-val {
+    color: #d8b4fe;
+}
+
+.theme-antihero .section-title::after {
+    background: #a855f7;
+}
+
+/* PRINT STYLES */
+@media print {
+    body {
+        background: white;
+        color: black;
+        overflow: visible;
+        height: auto;
+    }
+
+    .editor-pane,
+    .btn-back {
+        display: none !important;
+    }
+
+    .preview-pane {
+        padding: 0;
+        overflow: visible;
+        background: white;
+    }
+
+    .ficha-container {
+        border: none;
+        box-shadow: none;
+        background: white;
+        color: black;
+        max-width: 100%;
+        margin: 0;
+        min-height: auto;
+    }
+
+    /* Adjust colors for print to save ink */
+    .hero-title,
+    .section-title,
+    .stat-val,
+    .data-item strong {
+        color: #000 !important;
+    }
+
+    .ficha-container::before,
+    .ficha-container::after {
+        border-color: #000;
+    }
+
+    .text-block p,
+    .label-cell,
+    .value-cell {
+        color: #333;
+    }
+}
