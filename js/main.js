@@ -2774,14 +2774,44 @@ function shuffleArray(arr) {
 
 function gatherLegacyQuestions(ctx, limit) {
   if (!limit) return [];
+
+  // Use CONVERGENCE_QUESTIONS instead of QUESTIONS_DB
+  const DB = (typeof CONVERGENCE_QUESTIONS !== 'undefined') ? CONVERGENCE_QUESTIONS : [];
+  if (!DB.length && typeof QUESTIONS_DB !== 'undefined') DB.push(...QUESTIONS_DB); // Fallback
+
   const roleId = ctx.role;
   const uniId = document.getElementById('universo')?.value || 'anime';
   const animalId = state.animal || '';
   const isVillain = roleId === 'Villano';
-  const rPool = QUESTIONS_DB.filter(q => (isVillain && q.tags.r.includes('Villano')) || q.tags.r.includes(roleId));
-  const uPool = QUESTIONS_DB.filter(q => q.tags.u.includes(uniId) && (q.tags.r.includes('all') || q.tags.r.includes(roleId)));
-  const aPool = QUESTIONS_DB.filter(q => q.tags.a.includes(animalId) && (q.tags.r.includes('all') || q.tags.r.includes(roleId)));
-  const gPool = QUESTIONS_DB.filter(q => q.tags.u.includes('all') && q.tags.a.includes('all') && (q.tags.r.includes('all') || q.tags.r.includes(roleId)));
+
+  // Helper to check conditions (handles new schema `cond` vs old `tags`)
+  const checkCond = (q, type, val) => {
+    // New Schema: q.cond[type]
+    // Old Schema: q.tags[type] (mapped: rol->r, universe->u, animal->a)
+    let list = [];
+
+    if (q.cond) {
+      // New Schema
+      if (type === 'r') list = q.cond.rol || ['all'];
+      else if (type === 'u') list = q.cond.universe || ['all'];
+      else if (type === 'a') list = q.cond.animal || ['all'];
+      else list = ['all'];
+    } else if (q.tags) {
+      // Old Schema
+      list = q.tags[type] || ['all'];
+    } else {
+      // No conditions = All
+      list = ['all'];
+    }
+
+    return list.includes('all') || list.includes(val);
+  };
+
+  const rPool = DB.filter(q => (isVillain && checkCond(q, 'r', 'Villano')) || checkCond(q, 'r', roleId));
+  const uPool = DB.filter(q => checkCond(q, 'u', uniId) && checkCond(q, 'r', roleId));
+  const aPool = DB.filter(q => checkCond(q, 'a', animalId) && checkCond(q, 'r', roleId));
+  const gPool = DB.filter(q => checkCond(q, 'u', 'all') && checkCond(q, 'a', 'all') && checkCond(q, 'r', roleId));
+
   const selected = [];
   const seen = new Set();
   const add = list => {
@@ -2792,20 +2822,30 @@ function gatherLegacyQuestions(ctx, limit) {
       seen.add(q.id);
     });
   };
+
   if (isVillain) add(shuffleArray(rPool));
   add(shuffleArray(aPool));
   add(shuffleArray(uPool));
   add(shuffleArray(gPool));
-  if (selected.length < limit && Array.isArray(PREGUNTAS_TEST)) {
+
+  if (selected.length < limit && typeof PREGUNTAS_TEST !== 'undefined' && Array.isArray(PREGUNTAS_TEST)) {
     PREGUNTAS_TEST.forEach((q, idx) => {
       if (selected.length >= limit) return;
-      selected.push({ id: `legacy_p_${idx}`, q: q.q, o: q.o });
+      // Ensure unique ID for legacy array items
+      const legacyId = `legacy_p_${idx}`;
+      if (seen.has(legacyId)) return;
+
+      selected.push({ id: legacyId, q: q.q, o: q.o });
+      seen.add(legacyId);
     });
   }
-  const filler = gPool.length ? gPool : QUESTIONS_DB;
+
+  const filler = gPool.length ? gPool : DB;
   let guard = 0;
   while (selected.length < limit && filler.length && guard < 200) {
     const candidate = filler[Math.floor(Math.random() * filler.length)];
+    if (!candidate) { guard++; continue; } // Safety
+
     if (seen.has(candidate.id)) {
       guard += 1;
       continue;
@@ -2814,6 +2854,7 @@ function gatherLegacyQuestions(ctx, limit) {
     seen.add(candidate.id);
     guard += 1;
   }
+
   return selected.slice(0, limit).map((q, idx) => ({
     id: q.id || `legacy_auto_${idx}`,
     text: q.q,
@@ -2821,7 +2862,16 @@ function gatherLegacyQuestions(ctx, limit) {
     segmentLabel: 'Contexto S9U',
     suggestion: '',
     options: Array.isArray(q.o) ? q.o.slice() : [],
-    meta: Array.isArray(q.o) ? q.o.map(() => ({ category: 'conflict' })) : []
+    // Map options to meta category (logic/emotion/etc) if missing
+    meta: Array.isArray(q.o) ? q.o.map(opt => {
+      // Try to derive category from score if available
+      if (opt.score) {
+        if (opt.score.order > 0) return { category: 'logic' };
+        if (opt.score.psyche > 0) return { category: 'emotion' };
+        if (opt.score.light < 0) return { category: 'conflict' };
+      }
+      return { category: 'conflict' };
+    }) : []
   }));
 }
 
@@ -2886,20 +2936,35 @@ function updateTestInsights() {
   if (!container) return;
   const meta = state.testMeta || createEmptyTestMeta();
   const total = Object.values(meta).reduce((sum, value) => sum + value, 0);
-  const sorted = Object.entries(meta).sort((a, b) => b[1] - a[1]);
-  const [dominantKey, dominantValue] = sorted[0] || ['logic', 0];
-  const dominantLabel = CATEGORY_LABELS[dominantKey] || dominantKey;
-  const lines = [];
-  lines.push(total ? `Estilo dominante: ${dominantLabel} (${dominantValue} respuestas).` : 'Responde algunas preguntas para revelar tu estilo dominante.');
-  if (total) {
-    lines.push(`Resolución de conflictos: ${meta.conflict >= 2 ? 'Actúas de frente' : 'Buscas equilibrio'}.`);
-    const creativeTendency = meta.creativity >= meta.logic ? 'Alta creatividad adaptativa' : 'Enfoque más estructurado';
-    lines.push(`Creatividad y adaptabilidad: ${creativeTendency}.`);
-  } else {
-    lines.push('Resolución de conflictos: espera resultados de tus respuestas.');
-    lines.push('Creatividad y adaptabilidad: espera más datos creados por ti.');
+
+  if (total < 3) {
+    container.innerHTML = '<div class="test-insights-line" style="opacity:0.6">Responde más preguntas para iniciar el análisis psicológico de Helios...</div>';
+    return;
   }
-  container.innerHTML = lines.map(line => `<div class="test-insights-line">${line}</div>`).join('');
+
+  // Use the new Helios Engine
+  if (typeof generateHeliosPyscheReport === 'function') {
+    const role = document.getElementById('rolNarrativo')?.value || 'Neutral';
+    const animalName = state.animal ? (getAnimalesList().find(a => a.id === state.animal)?.name) : null;
+    const report = generateHeliosPyscheReport(meta, role, animalName);
+
+    const lines = [];
+    lines.push(`<strong style="color:var(--primary);letter-spacing:1px">${report.title.toUpperCase()}</strong>`);
+    lines.push(`<span style="font-size:11px;opacity:0.9">"${report.slogan}"</span>`);
+    lines.push(`<div style="margin-top:4px;font-style:italic;opacity:0.8;font-size:11px">${report.description}</div>`);
+
+    if (total > 10 && report.synergy) {
+      lines.push(`<div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(255,255,255,0.1);font-size:10px;color:#cbd5e1">${report.synergy}</div>`);
+    }
+
+    container.innerHTML = lines.map(line => `<div class="test-insights-line">${line}</div>`).join('');
+  } else {
+    // Fallback if engine not loaded
+    const sorted = Object.entries(meta).sort((a, b) => b[1] - a[1]);
+    const [dominantKey, dominantValue] = sorted[0] || ['logic', 0];
+    const dominantLabel = CATEGORY_LABELS[dominantKey] || dominantKey;
+    container.innerHTML = `<div class="test-insights-line">Estilo dominante: ${dominantLabel} (${dominantValue})</div>`;
+  }
 }
 
 // Actualiza la barra y el contador del progreso del test.
@@ -3823,33 +3888,74 @@ const LORE_DB = {
 };
 
 function generarHistoriaHeliosLocal() {
-  const nombre = document.getElementById('nombre').value || 'el protagonista';
+  const nombre = document.getElementById('nombre').value || 'El Protagonista';
 
   // Detectar canon
   const key = nombre.trim().toLowerCase().split(/\s+/)[0];
   const canon = LORE_DB[key];
-
   if (canon) {
     return `REGISTRO CANON (S9U): ${canon.desc}\n\nEste ser juega un papel fundamental en el tejido del destino, marcado por su naturaleza de ${canon.rol}. Su camino no es aleatorio, sino una manifestación de su esencia: ${canon.rasgos.join(', ')}.`;
   }
 
-  const rol = document.getElementById('rolNarrativo')?.value || '';
-  const universo = document.getElementById('universo').value ? UNIVERSOS.find(u => u.id == document.getElementById('universo').value)?.name : '';
-  const planeta = document.getElementById('planeta')?.value || '';
-  const historia = state.historia || '';
-  const v = state.villain || {};
+  // Si no se han cargado las plantillas, usar fallback simple
+  if (typeof STORY_TEMPLATES === 'undefined' || typeof getStoryTemplate === 'undefined') {
+    return "Historia en proceso de carga...";
+  }
 
-  const intro = rol === 'Villano'
-    ? `En las sombras de ${universo || 'la existencia'}, una amenaza toma forma. ${nombre} no busca comprensión, sino ${v.objetivo || 'un propósito absoluto'}.`
-    : `Bajo el cielo de ${planeta || 'un mundo distante'}, ${nombre} camina con el peso de su destino.`;
+  const rol = document.getElementById('rolNarrativo')?.value || 'Neutral';
 
-  const nudo = rol === 'Villano'
-    ? `Su motivación, ${v.motivacion || 'oscura y profunda'}, es el motor de una maquinaria imparable. La crueldad es solo un instrumento; el verdadero fin es ${v.objetivo || 'el dominio'}.`
-    : `Marcado por ${historia || 'un pasado que no perdona'}, cada elección lo acerca más a una verdad que quizás preferiría ignorar.`;
+  // Detectar Universo Key
+  let universoName = 'lo desconocido';
+  const uVal = document.getElementById('universo').value;
+  if (uVal && typeof UNIVERSOS !== 'undefined') {
+    const uObj = UNIVERSOS.find(u => u.id == uVal);
+    if (uObj) universoName = uObj.name;
+  }
 
-  const desenlace = `El patrón de sus decisiones sugiere un futuro donde ${rol === 'Villano' ? 'el orden será impuesto a la fuerza' : 'la esperanza es un acto de rebeldía'}. La historia de ${nombre} no está escrita en piedra, sino en voluntad.`;
+  let originKey = 'generic';
+  if (universoName.includes('Siul')) originKey = 'Siul';
+  else if (universoName.includes('Umbra') || universoName.includes('Sombra')) originKey = 'Umbra';
+  else if (universoName.includes('Posidonia') || universoName.includes('Agua')) originKey = 'Posidonia';
+  else if (universoName.includes('Ignis') || universoName.includes('Fuego')) originKey = 'Ignis';
 
-  return `${intro}\n\n${nudo}\n\n${desenlace}`;
+  const planeta = document.getElementById('planeta')?.value || 'un mundo lejano';
+  const raza = document.getElementById('raza')?.value || 'ser';
+  const animal = getAnimal()?.name || 'instinto';
+  const deseo = (state.deseos && state.deseos.length) ? state.deseos[0] : 'un propósito desconocido';
+
+  // Helper de inyección
+  const process = (tpl) => {
+    return tpl
+      .replace(/{N}/g, nombre)
+      .replace(/{P}/g, planeta)
+      .replace(/{R}/g, raza)
+      .replace(/{A}/g, animal)
+      .replace(/{D}/g, deseo);
+  };
+
+  // 1. Origenes
+  let origins = getStoryTemplate('origins', originKey);
+  if (!origins || !origins.length) origins = getStoryTemplate('origins', 'generic');
+  const originTpl = origins[Math.floor(Math.random() * origins.length)];
+  const originText = process(originTpl);
+
+  // 2. Incidente
+  let incidents = getStoryTemplate('incidents', rol);
+  if (!incidents || !incidents.length) incidents = getStoryTemplate('incidents', 'Neutral');
+  const incidentTpl = incidents[Math.floor(Math.random() * incidents.length)];
+  const incidentText = process(incidentTpl);
+
+  // 3. Desarrollo
+  const developments = STORY_TEMPLATES.development; // Usa global
+  const devTpl = developments[Math.floor(Math.random() * developments.length)];
+  const devText = process(devTpl);
+
+  // 4. Climax / Cierre
+  const climaxes = STORY_TEMPLATES.climaxes;
+  const climaxTpl = climaxes[Math.floor(Math.random() * climaxes.length)];
+  const climaxText = process(climaxTpl);
+
+  return `${originText}\n\n${incidentText}\n\n${devText}\n\n${climaxText}`;
 }
 
 // ============================================================
