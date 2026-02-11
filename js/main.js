@@ -220,6 +220,14 @@ function onKeyInput() {
   }
   updateGeminiControls();
 }
+
+function handleApiKeySubmit(event) {
+  event.preventDefault(); // Prevenir envío del formulario
+  const input = document.getElementById('geminiKeyInput');
+  // Simplemente guardar la clave (ya se guarda en onKeyInput)
+  input.blur(); // Quitar foco del input
+  return false;
+}
 function initSettingsUI() {
   ensureSettingsDefaults();
   const s = state.settings;
