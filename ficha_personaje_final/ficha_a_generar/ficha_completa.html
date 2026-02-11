@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ficha de Personaje S9U - Naerya Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../assets/images/favicon.png">
+
+    <!-- Google Fonts (Naerya Style) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Base Editor CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Naerya Template CSS -->
+    <link rel="stylesheet" href="css/ficha_naerya.css">
+
+    <style>
+        /* Override styles for Editor integration */
+        .preview-pane {
+            background: #0a1628;
+            /* Match Naerya ocean-deep */
+            padding: 0;
+            overflow-y: auto;
+        }
+
+        /* View Mode Toggle Class */
+        body.view-mode .editor-pane {
+            display: none !important;
+        }
+
+        body.view-mode .preview-pane {
+            width: 100% !important;
+            display: block !important;
+        }
+
+        body.view-mode .btn-exit-view {
+            display: flex;
+            /* Changed to flex for centering icon */
+        }
+
+        /* Floating Exit Button for View Mode */
+        .btn-exit-view {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10001;
+            background: linear-gradient(135deg, var(--celestial-gold) 0%, #f5e6d3 100%);
+            color: #0a1628;
+            padding: 12px 25px;
+            border-radius: 30px;
+            border: 2px solid #fff;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            font-size: 1rem;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            animation: fadeInDown 0.5s ease-out;
+        }
+
+        .btn-exit-view:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--celestial-gold);
+        }
+
+        /* Custom Scrollbar for Preview */
+        .preview-pane::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .preview-pane::-webkit-scrollbar-track {
+            background: #0a1628;
+        }
+
+        .preview-pane::-webkit-scrollbar-thumb {
+            background: var(--ocean-light);
+            border-radius: 5px;
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .preview-pane {
+                padding-bottom: 100px;
+            }
+
+            .btn-exit-view {
+                top: auto;
+                bottom: 20px;
+                right: 20px;
+            }
+
+            /* Ensure modal is centered on small screens */
+            .custom-modal {
+                width: 90% !important;
+                margin: 0 auto;
+            }
+        }
+
+        /* Reset Modal - THEMED */
+        .custom-modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            /* Darker backdrop */
+            z-index: 10005;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .custom-modal {
+            background: linear-gradient(135deg, #1a0505 0%, #2a0a0a 100%);
+            /* Dark Red/Black for Danger */
+            border: 2px solid #ff4444;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(255, 68, 68, 0.2);
+            position: relative;
+            transform: scale(0.9);
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .custom-modal h3 {
+            font-family: 'Cinzel', serif;
+            color: #ff4444;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .custom-modal p {
+            font-family: 'Crimson Pro', serif;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            color: #ffdada;
+        }
+
+        .custom-modal i.warning-icon {
+            font-size: 3rem;
+            color: #ff4444;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .btn-modal-cancel {
+            background: transparent;
+            border: 1px solid #aaa;
+            color: #fff;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            transition: all 0.2s;
+        }
+
+        .btn-modal-cancel:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-modal-danger {
+            background: #d32f2f;
+            border: none;
+            color: #fff;
+            padding: 10px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
+            transition: all 0.2s;
+        }
+
+        .btn-modal-danger:hover {
+            background: #b71c1c;
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(211, 47, 47, 0.6);
+        }
+    </style>
+
+    <!-- Libs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/docx@7.1.0/build/index.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+
+<body>
+    <div id="app" class="app">
+
+        <!-- EXIT VIEW MODE BUTTON -->
+        <button class="btn-exit-view" onclick="toggleViewMode(false)">
+            <i class="fas fa-undo-alt"></i> Volver a Editar
+        </button>
+
+        <!-- EDITOR SIDEBAR -->
+        <aside class="editor-pane active">
+            <div class="editor-header">
+                <h2><i class="fas fa-edit"></i> Editor S9U</h2>
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="showResetModal()" title="Reiniciar"><i
+                            class="fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+
+            <div class="editor-content">
+                <!-- SECTIONS (Keep original inputs but ensure mapping) -->
+
+                <!-- I. IDENTIDAD -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>I. Identidad</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Nombre Verdadero</label><input type="text" id="input_nombre_real"
+                                oninput="DataManager.update('nombre_real', this.value)"></div>
+                        <div class="form-group"><label>Apodo / Título</label><input type="text" id="input_apodo"
+                                oninput="DataManager.update('apodo', this.value)"></div>
+                        <div class="form-group"><label>Edad</label><input type="text" id="input_edad"
+                                oninput="DataManager.update('edad', this.value)"></div>
+                        <div class="form-group"><label>Raza / Especie</label><input type="text" id="input_raza"
+                                oninput="DataManager.update('raza', this.value)"></div>
+                        <div class="form-group"><label>Clase / Ocupación</label><input type="text" id="input_ocupacion"
+                                oninput="DataManager.update('ocupacion', this.value)"></div>
+                        <div class="form-group"><label>Lugar de Origen</label><input type="text" id="input_origen"
+                                oninput="DataManager.update('origen', this.value)"></div>
+                    </div>
+                </div>
+
+                <!-- II. ARQUETIPO -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>II. Psique y Moral</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Arquetipo</label><input type="text" id="input_arquetipo"
+                                oninput="DataManager.update('arquetipo', this.value)"></div>
+                        <div class="form-group"><label>Alineamiento</label>
+                            <select id="input_alineamiento" onchange="DataManager.update('alineamiento', this.value)">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="Legal Bueno">Legal Bueno</option>
+                                <option value="Neutral Bueno">Neutral Bueno</option>
+                                <option value="Caótico Bueno">Caótico Bueno</option>
+                                <option value="Legal Neutral">Legal Neutral</option>
+                                <option value="Neutral Puro">Neutral Puro</option>
+                                <option value="Caótico Neutral">Caótico Neutral</option>
+                                <option value="Legal Malvado">Legal Malvado</option>
+                                <option value="Neutral Malvado">Neutral Malvado</option>
+                                <option value="Caótico Malvado">Caótico Malvado</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Cita / Creencia</label><textarea id="input_creencia"
+                                oninput="DataManager.update('creencia', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- III. ATRIBUTOS -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>III. Atributos</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="attr-grid">
+                            <div><label>Fuerza</label><input type="number" id="input_fuerza"
+                                    oninput="DataManager.update('fuerza', this.value)"></div>
+                            <div><label>Destreza</label><input type="number" id="input_destreza"
+                                    oninput="DataManager.update('destreza', this.value)"></div>
+                            <div><label>Constitución</label><input type="number" id="input_constitucion"
+                                    oninput="DataManager.update('constitucion', this.value)"></div>
+                            <div><label>Inteligencia</label><input type="number" id="input_inteligencia"
+                                    oninput="DataManager.update('inteligencia', this.value)"></div>
+                            <div><label>Sabiduría</label><input type="number" id="input_sabiduria"
+                                    oninput="DataManager.update('sabiduria', this.value)"></div>
+                            <div><label>Carisma</label><input type="number" id="input_carisma"
+                                    oninput="DataManager.update('carisma', this.value)"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- IV. DETALLES PSICOLÓGICOS -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>IV. Mapa Psicológico</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Rasgos</label><textarea id="input_rasgos"
+                                oninput="DataManager.update('rasgos', this.value)"></textarea></div>
+                        <div class="form-group"><label>Motivaciones</label><textarea id="input_motivaciones"
+                                oninput="DataManager.update('motivaciones', this.value)"></textarea></div>
+                        <div class="form-group"><label>Miedos</label><textarea id="input_miedos"
+                                oninput="DataManager.update('miedos', this.value)"></textarea></div>
+                        <div class="form-group"><label>Manías/Trastornos</label><textarea id="input_trastornos"
+                                oninput="DataManager.update('trastornos', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- V. HABILIDADES -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>V. Habilidades</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Habilidades Pasivas</label><textarea id="input_habilidades"
+                                oninput="DataManager.update('habilidades', this.value)"></textarea></div>
+                        <div class="form-group"><label>Poderes / Magia</label><textarea id="input_poderes"
+                                oninput="DataManager.update('poderes', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- VI. EQUIPO -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>VI. Equipo</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Armas</label><textarea id="input_armas"
+                                oninput="DataManager.update('armas', this.value)"></textarea></div>
+                        <div class="form-group"><label>Inventario</label><textarea id="input_equipo"
+                                oninput="DataManager.update('equipo', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- VII. HISTORIA -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>VII. Historia</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Historia Completa</label><textarea class="super-tall"
+                                id="input_historia" oninput="DataManager.update('historia', this.value)"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIII. APARIENCIA -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>VIII. Apariencia</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Descripción</label><textarea id="input_apariencia_fisica"
+                                oninput="DataManager.update('apariencia_fisica', this.value)"></textarea></div>
+                        <div class="attr-grid">
+                            <div><label>Altura</label><input type="text" id="input_altura"
+                                    oninput="DataManager.update('altura', this.value)"></div>
+                            <div><label>Peso</label><input type="text" id="input_peso"
+                                    oninput="DataManager.update('peso', this.value)"></div>
+                            <div><label>Complexión</label><input type="text" id="input_complexion"
+                                    oninput="DataManager.update('complexion', this.value)"></div>
+                            <div><label>Cabello</label><input type="text" id="input_cabello"
+                                    oninput="DataManager.update('cabello', this.value)"></div>
+                            <div><label>Ojos</label><input type="text" id="input_ojos"
+                                    oninput="DataManager.update('ojos', this.value)"></div>
+                            <div><label>Piel</label><input type="text" id="input_piel"
+                                    oninput="DataManager.update('piel', this.value)"></div>
+                        </div>
+                        <div class="form-group"><label>Rasgos Extra</label><textarea id="input_alas_o_rasgos_extra"
+                                oninput="DataManager.update('alas_o_rasgos_extra', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <!-- IX. NARRATIVA -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>IX. Narrativa</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Profecía</label><textarea id="input_profecia_texto"
+                                oninput="DataManager.update('profecia_texto', this.value)"></textarea></div>
+                        <div class="form-group"><label>Rol Narrativo</label><input type="text" id="input_rol_narrativo"
+                                oninput="DataManager.update('rol_narrativo', this.value)"></div>
+                    </div>
+                </div>
+
+                <!-- X. RELACIONES -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>X. Relaciones</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div id="relacionesEditorContainer"></div>
+                        <button class="btn btn-secondary btn-small" onclick="addRelacion()">+ Añadir Relación</button>
+                    </div>
+                </div>
+
+                <!-- XI. CULMINACIÓN -->
+                <div class="collapsible-section">
+                    <div class="collapsible-header" onclick="toggleSection(this)"><span>XI. Resumen</span><i
+                            class="fas fa-chevron-down"></i></div>
+                    <div class="collapsible-content">
+                        <div class="form-group"><label>Resumen Final</label><textarea id="input_resumen_final"
+                                oninput="DataManager.update('resumen_final', this.value)"></textarea></div>
+                        <div class="form-group"><label>Puntos Clave</label><textarea id="input_resumen_puntos_clave"
+                                oninput="DataManager.update('resumen_puntos_clave', this.value)"></textarea></div>
+                    </div>
+                </div>
+
+                <div class="export-area"
+                    style="margin-top:40px; border-top: 1px solid rgba(255,255,255,0.1); padding-top:30px;">
+                    <h3 style="margin-bottom:20px"><i class="fas fa-file-export"></i> Exportar & Finalizar</h3>
+
+                    <div class="export-buttons" style="margin-bottom:25px">
+                        <button class="btn btn-export" onclick="exportToTXT()"><i class="fas fa-file-alt"></i> TXT
+                            (Detallado)</button>
+                        <button class="btn btn-export" onclick="exportToPDF()"><i class="fas fa-file-pdf"></i> PDF
+                            (Naerya)</button>
+                        <button class="btn btn-export" onclick="exportToDOCX()"><i class="fas fa-file-word"></i> DOCX
+                            (Word)</button>
+                    </div>
+
+                    <!-- BOTÓN VER FICHA COMPLETA (Featured) -->
+                    <button class="btn btn-primary" style="
+                        background: linear-gradient(90deg, var(--celestial-gold), #f5e6d3); 
+                        color: #0d1b2a; 
+                        width:100%; 
+                        padding: 18px; 
+                        font-size: 1.2rem;
+                        font-family: 'Cinzel', serif;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 2px;
+                        box-shadow: 0 0 20px rgba(212, 168, 85, 0.4);
+                        border: 1px solid #fff;
+                        transition: all 0.3s ease;
+                    " onclick="toggleViewMode(true)">
+                        <i class="fas fa-eye"></i> Ver Ficha Completa Generada
+                    </button>
+
+                    <button class="btn btn-secondary" style="margin-top:20px; width:100%" onclick="window.close()">
+                        <i class="fas fa-chevron-left"></i> Volver al Menú Principal
+                    </button>
+                </div>
+
+                <div class="credits">Generador S9U - Naerya Engine v2.0</div>
+            </div>
+        </aside>
+
+        <!-- PREVIEW PANE (NAERYA TEMPLATE EXACT REPLICA with bindings) -->
+        <main class="preview-pane">
+            <div class="container" id="fichaPreview">
+
+                <!-- Hero -->
+                <header class="hero">
+                    <h1 class="hero-title" data-print="nombre_real">NOMBRE DEL PERSONAJE</h1>
+                    <h2 class="hero-subtitle" data-print="apodo">ALIAS / TÍTULO</h2>
+                    <p class="hero-descriptor">
+                        <span data-print="raza">RAZA</span> • <span data-print="ocupacion">CLASE / OCUPACIÓN</span>
+                    </p>
+                    <div class="hero-divider"></div>
+                </header>
+
+                <!-- I. IDENTIDAD -->
+                <section class="section">
+                    <h2 class="section-title">I. Identidad & Origen</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-label">Nombre Real</div>
+                            <div class="info-value" data-print="nombre_real"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Edad</div>
+                            <div class="info-value" data-print="edad"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Origen</div>
+                            <div class="info-value" data-print="origen"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Ocupación</div>
+                            <div class="info-value" data-print="ocupacion"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- II. ARQUETIPO -->
+                <section class="section">
+                    <h2 class="section-title">II. Arquetipo & Moral</h2>
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-label">Arquetipo</div>
+                            <div class="info-value" data-print="arquetipo"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Alineamiento</div>
+                            <div class="info-value" data-print="alineamiento"></div>
+                        </div>
+                    </div>
+                    <div class="quote-box">
+                        <p class="quote-text" data-print="creencia">"..."</p>
+                        <div class="quote-author" data-print="apodo"></div>
+                    </div>
+                </section>
+
+                <!-- III. ATRIBUTOS -->
+                <section class="section">
+                    <h2 class="section-title">III. Atributos</h2>
+                    <table class="data-table" style="text-align:center">
+                        <thead>
+                            <tr>
+                                <th>Fuerza</th>
+                                <th>Destreza</th>
+                                <th>Constitución</th>
+                                <th>Inteligencia</th>
+                                <th>Sabiduría</th>
+                                <th>Carisma</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="fuerza">10</td>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="destreza">10</td>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="constitucion">10</td>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="inteligencia">10</td>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="sabiduria">10</td>
+                                <td style="font-size:1.4rem; font-weight:bold" data-print="carisma">10</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </section>
+
+                <!-- IV. MAPA PSICOLÓGICO -->
+                <section class="section">
+                    <h2 class="section-title">IV. Mapa Psicológico</h2>
+                    <div class="category-header">
+                        <div class="category-title">Rasgos & Personalidad</div>
+                    </div>
+                    <p class="section-subheading" data-print="rasgos"></p>
+
+                    <div class="highlight-box">
+                        <div class="highlight-title">Motivaciones</div>
+                        <div class="highlight-content" data-print="motivaciones"></div>
+                    </div>
+
+                    <div class="info-grid">
+                        <div class="info-card">
+                            <div class="info-label">Miedos</div>
+                            <div class="info-value" data-print="miedos"></div>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-label">Trastornos</div>
+                            <div class="info-value" data-print="trastornos"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- V. HABILIDADES -->
+                <section class="section">
+                    <h2 class="section-title">V. Habilidades & Poderes</h2>
+                    <div class="ability-grid">
+                        <div class="ability-card">
+                            <span class="ability-icon">⚔️</span>
+                            <div class="ability-name">Habilidades Pasivas</div>
+                            <div class="ability-description" data-print="habilidades"></div>
+                        </div>
+                        <div class="ability-card">
+                            <span class="ability-icon">✨</span>
+                            <div class="ability-name">Poderes / Magia</div>
+                            <div class="ability-description" data-print="poderes"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VI. EQUIPO -->
+                <section class="section">
+                    <h2 class="section-title">VI. Equipamiento</h2>
+                    <div class="custom-list">
+                        <li><strong>Armas:</strong> <span data-print="armas"></span></li>
+                        <li><strong>Inventario:</strong> <span data-print="equipo"></span></li>
+                    </div>
+                </section>
+
+                <!-- VII. HISTORIA -->
+                <section class="section">
+                    <h2 class="section-title">VII. Historia</h2>
+                    <div style="column-count: 2; column-gap: 40px; text-align: justify; line-height:1.8">
+                        <p data-print="historia"></p>
+                    </div>
+                </section>
+
+                <!-- VIII. APARIENCIA -->
+                <section class="section">
+                    <h2 class="section-title">VIII. Apariencia</h2>
+                    <p data-print="apariencia_fisica" style="margin-bottom:20px; font-style:italic"></p>
+                    <table class="data-table">
+                        <tbody>
+                            <tr>
+                                <td class="label-cell">Altura</td>
+                                <td class="value-cell" data-print="altura"></td>
+                                <td class="label-cell">Peso</td>
+                                <td class="value-cell" data-print="peso"></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Complexión</td>
+                                <td class="value-cell" data-print="complexion"></td>
+                                <td class="label-cell">Piel</td>
+                                <td class="value-cell" data-print="piel"></td>
+                            </tr>
+                            <tr>
+                                <td class="label-cell">Cabello</td>
+                                <td class="value-cell" data-print="cabello"></td>
+                                <td class="label-cell">Ojos</td>
+                                <td class="value-cell" data-print="ojos"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="highlight-box" style="margin-top:20px">
+                        <div class="highlight-title">Rasgos Extra</div>
+                        <div class="highlight-content" data-print="alas_o_rasgos_extra"></div>
+                    </div>
+                </section>
+
+                <!-- IX. NARRATIVA -->
+                <section class="section">
+                    <h2 class="section-title">IX. Destino & Rol</h2>
+                    <div class="prophecy-box">
+                        <div class="prophecy-title">Profecía</div>
+                        <div class="prophecy-text" data-print="profecia_texto"></div>
+                    </div>
+                    <div class="info-card" style="margin-top:30px">
+                        <div class="info-label">Rol Narrativo</div>
+                        <div class="info-value" data-print="rol_narrativo"></div>
+                    </div>
+                </section>
+
+                <!-- X. RELACIONES -->
+                <section class="section">
+                    <h2 class="section-title">X. Relaciones</h2>
+                    <div id="relacionesPreviewContainer"></div>
+                </section>
+
+                <!-- XI. RESUMEN FINAL -->
+                <section class="section" id="meta-convergencia">
+                    <h2 class="section-title">XI. Resumen de Convergencia</h2>
+                    <div class="summary-box">
+                        <div class="summary-title">Conclusión</div>
+                        <div class="summary-text" data-print="resumen_final"></div>
+                        <div style="font-family:'Cinzel'; color:var(--celestial-gold)"
+                            data-print="resumen_puntos_clave"></div>
+                    </div>
+                </section>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <p class="credit-title">Seres del Noveno Universo</p>
+                    <p class="credit-subtitle">Generado por Helios System</p>
+                </footer>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL REINICIAR (THEMED) -->
+    <div id="resetModal" class="custom-modal-overlay">
+        <div class="custom-modal">
+            <i class="fas fa-exclamation-triangle warning-icon"></i>
+            <h3>¿BORRAR TODO?</h3>
+            <p>Se perderán todos los datos actuales de forma permanente. Esta acción es irreversible.</p>
+            <div class="modal-actions">
+                <button class="btn-modal-cancel" onclick="closeResetModal()">Cancelar</button>
+                <button class="btn-modal-danger" onclick="confirmReset()">Borrar Datos</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
+    <script src="js/data_manager.js"></script>
+    <script src="js/export/export_txt.js"></script>
+    <script src="js/export/export_pdf.js"></script>
+    <script src="js/export/export_docx.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Mobile Toggle (Only visible on small screens) -->
+    <button class="btn-toggle-view" onclick="toggleMobileView()" title="Alternar Vista">👁️</button>
+
+    <script>
+        // Toggle View Mode Logic
+        function toggleViewMode(active) {
+            if (active) {
+                document.body.classList.add('view-mode');
+                // Scroll to top to show the full glory
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            } else {
+                document.body.classList.remove('view-mode');
+            }
+        }
+
+        // Mobile Logic
+        let isEditorView = true;
+        function toggleMobileView() {
+            const editor = document.querySelector('.editor-pane');
+            const preview = document.querySelector('.preview-pane');
+            const btn = document.querySelector('.btn-toggle-view');
+
+            isEditorView = !isEditorView;
+
+            if (isEditorView) {
+                editor.classList.add('active');
+                preview.classList.remove('active');
+                btn.innerHTML = '👁️';
+            } else {
+                editor.classList.remove('active');
+                preview.classList.add('active');
+                btn.innerHTML = '✏️';
+            }
+        }
+    </script>
+</body>
+
+</html>
