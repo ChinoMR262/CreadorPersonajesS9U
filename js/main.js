@@ -4669,3 +4669,27 @@ function abrirFichaGenerada() {
   // 3. Abrir en nueva pestaña
   window.open('ficha_personaje_final/ficha_a_generar/ficha_completa.html', '_blank');
 }
+
+// Mostrar botón de ficha completa solo si DB_FICHA está disponible
+function checkFichaCompletaButton() {
+  const container = document.getElementById('fichaCompletaContainer');
+  if (container) {
+    if (typeof DB_FICHA !== 'undefined') {
+      container.style.display = 'block';
+      console.log('Botón de ficha completa visible - DB_FICHA disponible');
+    } else {
+      container.style.display = 'none';
+      console.warn('Botón de ficha completa oculto - DB_FICHA no disponible');
+    }
+  }
+}
+
+// Verificar después de que cargue la app
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(checkFichaCompletaButton, 1000);
+});
+
+// También verificar después de que carguen los scripts
+window.addEventListener('load', () => {
+  setTimeout(checkFichaCompletaButton, 500);
+});
