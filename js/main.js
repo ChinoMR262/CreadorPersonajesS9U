@@ -4390,7 +4390,7 @@ function resetAll() { if (!confirm('¿Reiniciar todo? Se perderán todos los dat
 // INICIALIZACIÓN PANTALLA DE CARGA (Gatillo manual desde index.html después de cargar cargas parciales)
 window.initSplash = () => {
   const splash = document.getElementById('splashScreen');
-  if (splash) {
+  if (splash && !splash.classList.contains('hidden')) {
     // Asegurar que el scroll esté arriba
     window.scrollTo(0, 0);
 
