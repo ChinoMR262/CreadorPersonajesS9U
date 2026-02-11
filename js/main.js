@@ -4411,3 +4411,40 @@ window.initSplash = () => {
     document.body.style.overflow = 'auto';
   }
 };
+
+// ============================================================
+// OPTIMIZACIÓN DE ASSETS (Imágenes)
+// ============================================================
+// Precarga imágenes críticas en segundo plano para que la UI se sienta instantánea.
+function preloadAssets() {
+  console.log('Iniciando precarga de imágenes...');
+  const images = [];
+
+  // 1. Animales Totémicos (Fondos)
+  const animList = (typeof getAnimalesList === 'function') ? getAnimalesList() : [];
+  animList.forEach(a => {
+    if (a.img) {
+      const i = new Image();
+      i.src = a.img;
+      images.push(i);
+    }
+  });
+
+  // 2. Expresiones de Personajes (Escenas)
+  if (typeof SCENES !== 'undefined') {
+    Object.values(SCENES).forEach(s => {
+      if (s.img) {
+        const i = new Image();
+        i.src = s.img;
+        images.push(i);
+      }
+    });
+  }
+
+  console.log(`Precargando ${images.length} imágenes en caché.`);
+}
+
+// Iniciar precarga poco después de que la app arranque
+window.addEventListener('load', () => {
+  setTimeout(preloadAssets, 3000);
+});
