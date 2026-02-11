@@ -151,7 +151,7 @@
   background-image:
     radial-gradient(circle at 50% 35%, var(--mbti-glow), transparent 62%),
     linear-gradient(160deg, var(--mbti-surface) 0%, var(--mbti-deep) 100%),
-    url('img/personalidad_mbti/mbti_all_esencia.png');
+    url('../img/personalidad_mbti/mbti_all_esencia.png');
   background-blend-mode: screen, normal, normal;
   background-size: cover;
   background-position: center;
