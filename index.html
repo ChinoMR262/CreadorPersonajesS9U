@@ -3,9 +3,11 @@
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>S9U â€” Helios Engine Data v8</title>
   <meta name="theme-color" content="#02040a">
+  <link rel="icon" href="data:;base64,iVBORw0KGgo=">
 
   <!-- Google Fonts: Orbitron (Sci-Fi) & Rajdhani (Tech) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,6 +20,7 @@
   <!-- Seguridad: CSP y Guardia de Autenticación -->
   <meta http-equiv="Content-Security-Policy"
     content="default-src 'self' https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; font-src 'self' https: data:; img-src 'self' data: https: blob:;">
+  <script src="js/prefs_bundle.js"></script>
   <script>
     (async function () {
       const AUTH_TOKEN = 's9u_auth_token_v8_secure';
@@ -158,7 +161,7 @@
         </div>
       </div>
       <!-- Comentario: Campo para pegar la API Key (opcional). -->
-      <div class="settings-row"
+      <form onsubmit="return false;" class="settings-row"
         style="flex-direction:column;align-items:stretch;gap:8px;margin-top:-4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05)">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <label for="geminiKeyInput" style="font-size:11px;opacity:0.7" class="settings-label">Clave API
@@ -167,8 +170,8 @@
         </div>
         <input type="password" id="geminiKeyInput" placeholder="Pegar API Key de Google Gemini..."
           style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px;font-family:'Share Tech Mono';font-size:11px;border-radius:4px;outline:none;width:100%"
-          oninput="onKeyInput()">
-      </div>
+          oninput="onKeyInput()" autocomplete="on">
+      </form>
       <!-- Comentario: Control global de animaciones. -->
       <div class="settings-row"><span class="settings-label">Animaciones</span>
         <div class="settings-toggle">
@@ -1186,12 +1189,12 @@
         }
       }, 6500);
 
-      const initApp = () => {
+      const initApp = async () => {
         // Iniciar App DESPUÉS de que los parciales estén listos
         // Envolver en try-catch para asegurar que el Splash se elimine incluso si la App falla
         try {
           if (window.initHelios) {
-            window.initHelios();
+            await window.initHelios();
           } else {
             console.error("initHelios function not found in main.js");
           }
