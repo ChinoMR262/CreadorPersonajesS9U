@@ -1,5 +1,56 @@
 /* Main App Logic for Ficha Generator */
 
+// --- COLLAPSIBLE SECTIONS ---
+function toggleSection(header) {
+    const content = header.nextElementSibling;
+    const icon = header.querySelector('i');
+    
+    console.log('Toggle section clicked', content, icon); // Debug log
+    
+    if (!content || !icon) {
+        console.error('Missing content or icon');
+        return;
+    }
+    
+    // Check if section is currently collapsed
+    const isCollapsed = content.style.maxHeight === '0px' || content.style.maxHeight === '' || !content.classList.contains('expanded');
+    
+    console.log('Is collapsed:', isCollapsed);
+    
+    if (isCollapsed) {
+        // Expand section
+        content.style.maxHeight = content.scrollHeight + 'px';
+        content.classList.add('expanded');
+        icon.style.transform = 'rotate(180deg)';
+        console.log('Expanding section');
+    } else {
+        // Collapse section
+        content.style.maxHeight = '0px';
+        content.classList.remove('expanded');
+        icon.style.transform = 'rotate(0deg)';
+        console.log('Collapsing section');
+    }
+}
+
+// Initialize collapsible sections
+function initializeCollapsibleSections() {
+    const sections = document.querySelectorAll('.collapsible-content');
+    sections.forEach(section => {
+        section.style.maxHeight = '0px';
+        section.classList.remove('expanded');
+    });
+    
+    const icons = document.querySelectorAll('.collapsible-header i');
+    icons.forEach(icon => {
+        icon.style.transform = 'rotate(0deg)';
+    });
+    
+    console.log('Collapsible sections initialized');
+}
+
+// Initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', initializeCollapsibleSections);
+
 // --- RELACIONES LOGIC ---
 function addRelacion() {
     // Create UI for new relation
