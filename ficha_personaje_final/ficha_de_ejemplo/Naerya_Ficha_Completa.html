@@ -1,0 +1,1533 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naerya del Abismo Celeste - Ficha Técnica Completa</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600;700&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --ocean-deep: #0a1628;
+            --ocean-mid: #1a3a52;
+            --ocean-light: #2d5f7f;
+            --water-crystal: #4a90e2;
+            --water-foam: #7cbae8;
+            --water-shine: #b8e0ff;
+            --celestial-gold: #d4a855;
+            --celestial-light: #f5e6d3;
+            --pearl-white: #f0f8ff;
+            --shadow-abyss: rgba(10, 22, 40, 0.9);
+            --glow-divine: rgba(212, 168, 85, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Crimson Pro', serif;
+            background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-mid) 50%, var(--ocean-deep) 100%);
+            background-attachment: fixed;
+            color: var(--pearl-white);
+            line-height: 1.7;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated water effect background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(124, 186, 232, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(212, 168, 85, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            animation: waterFlow 20s ease-in-out infinite;
+            z-index: 0;
+        }
+
+        @keyframes waterFlow {
+            0%, 100% { opacity: 0.3; transform: scale(1) translateY(0); }
+            50% { opacity: 0.5; transform: scale(1.05) translateY(-10px); }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header/Hero Section */
+        .hero {
+            text-align: center;
+            padding: 60px 20px 80px;
+            position: relative;
+            margin-bottom: 60px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--water-crystal), transparent);
+            box-shadow: 0 0 20px var(--water-crystal);
+        }
+
+        .hero-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--water-shine) 0%, var(--water-crystal) 50%, var(--celestial-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 30px rgba(74, 144, 226, 0.5);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.2); }
+        }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.3rem, 3vw, 2rem);
+            color: var(--water-foam);
+            font-style: italic;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.3s forwards;
+        }
+
+        .hero-descriptor {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--water-shine);
+            font-weight: 300;
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        .hero-divider {
+            margin: 30px auto;
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--celestial-gold), transparent);
+            position: relative;
+        }
+
+        .hero-divider::before,
+        .hero-divider::after {
+            content: '◆';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--celestial-gold);
+            font-size: 12px;
+        }
+
+        .hero-divider::before {
+            left: -20px;
+        }
+
+        .hero-divider::after {
+            right: -20px;
+        }
+
+        /* Character Image Placeholder */
+        .character-image-section {
+            display: flex;
+            justify-content: center;
+            margin: 60px 0;
+            animation: fadeInScale 1s ease-out 0.9s backwards;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .character-image-container {
+            position: relative;
+            width: 350px;
+            height: 450px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(74, 144, 226, 0.3),
+                inset 0 0 60px rgba(74, 144, 226, 0.1);
+            border: 3px solid var(--water-crystal);
+            background: linear-gradient(135deg, var(--ocean-mid) 0%, var(--ocean-light) 100%);
+            transition: all 0.4s ease;
+        }
+
+        .character-image-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 25px 80px rgba(0, 0, 0, 0.6),
+                0 0 60px rgba(74, 144, 226, 0.5),
+                inset 0 0 80px rgba(74, 144, 226, 0.2);
+        }
+
+        .character-image-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 70%, rgba(212, 168, 85, 0.1) 0%, transparent 50%);
+            animation: lightShift 6s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes lightShift {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 0.8; }
+        }
+
+        .character-image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .placeholder-icon {
+            font-size: 80px;
+            margin-bottom: 20px;
+            opacity: 0.6;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .placeholder-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--water-foam);
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .character-image-caption {
+            text-align: center;
+            margin-top: 20px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            color: var(--celestial-gold);
+            font-style: italic;
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background: rgba(26, 58, 82, 0.4);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 144, 226, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease-out backwards;
+        }
+
+        .section:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        .section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            color: var(--celestial-gold);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--water-crystal);
+            position: relative;
+            letter-spacing: 1px;
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100px;
+            height: 2px;
+            background: var(--celestial-gold);
+            box-shadow: 0 0 10px var(--celestial-gold);
+        }
+
+        .section-subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            color: var(--water-crystal);
+            margin: 30px 0 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .section-subheading {
+            font-family: 'Crimson Pro', serif;
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            color: var(--water-foam);
+            margin: 20px 0 15px;
+            font-weight: 600;
+            font-style: italic;
+        }
+
+        /* Info Grid */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .info-card {
+            background: linear-gradient(135deg, rgba(45, 95, 127, 0.5) 0%, rgba(26, 58, 82, 0.5) 100%);
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .info-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(74, 144, 226, 0.3);
+            border-color: var(--water-crystal);
+        }
+
+        .info-card:hover::before {
+            left: 100%;
+        }
+
+        .info-label {
+            font-size: 0.95rem;
+            color: var(--celestial-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 1.15rem;
+            color: var(--pearl-white);
+            font-weight: 400;
+        }
+
+        /* Data Table */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 30px 0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .data-table th {
+            background: linear-gradient(135deg, var(--ocean-light) 0%, var(--water-crystal) 100%);
+            color: var(--pearl-white);
+            padding: 18px;
+            text-align: left;
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid var(--celestial-gold);
+        }
+
+        .data-table td {
+            background: rgba(26, 58, 82, 0.5);
+            padding: 18px;
+            border-bottom: 1px solid rgba(74, 144, 226, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .data-table tr:hover td {
+            background: rgba(45, 95, 127, 0.6);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .label-cell {
+            font-weight: 600;
+            color: var(--celestial-gold);
+            width: 30%;
+            font-size: 1.05rem;
+        }
+
+        .value-cell {
+            color: var(--pearl-white);
+            font-size: 1.05rem;
+        }
+
+        /* Quote Box */
+        .quote-box {
+            background: linear-gradient(135deg, rgba(212, 168, 85, 0.15) 0%, rgba(74, 144, 226, 0.15) 100%);
+            border-left: 5px solid var(--celestial-gold);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 0 15px 15px 0;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 80px;
+            color: var(--celestial-gold);
+            opacity: 0.2;
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+            font-style: italic;
+            color: var(--pearl-white);
+            line-height: 1.8;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quote-author {
+            text-align: right;
+            margin-top: 15px;
+            font-size: 1.1rem;
+            color: var(--celestial-gold);
+            font-weight: 600;
+        }
+
+        /* Prophecy Box */
+        .prophecy-box {
+            background: linear-gradient(135deg, rgba(139, 71, 137, 0.2) 0%, rgba(107, 40, 105, 0.3) 100%);
+            border: 2px solid rgba(155, 88, 153, 0.5);
+            padding: 40px;
+            margin: 30px 0;
+            border-radius: 20px;
+            box-shadow: 
+                0 10px 40px rgba(139, 71, 137, 0.4),
+                inset 0 0 40px rgba(155, 88, 153, 0.1);
+            position: relative;
+        }
+
+        .prophecy-box::before,
+        .prophecy-box::after {
+            content: '✦';
+            position: absolute;
+            font-size: 30px;
+            color: rgba(212, 168, 85, 0.6);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .prophecy-box::before {
+            top: 20px;
+            left: 20px;
+        }
+
+        .prophecy-box::after {
+            bottom: 20px;
+            right: 20px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .prophecy-title {
+            text-align: center;
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            color: #d4a855;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .prophecy-text {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            font-style: italic;
+            color: #d8b8d8;
+            line-height: 2;
+            margin: 15px 0;
+        }
+
+        /* Ability Cards */
+        .ability-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+
+        .ability-card {
+            background: linear-gradient(135deg, rgba(45, 95, 127, 0.6) 0%, rgba(26, 58, 82, 0.6) 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(74, 144, 226, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ability-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            animation: rotate 10s linear infinite;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .ability-card:hover::before {
+            opacity: 1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ability-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(74, 144, 226, 0.4);
+            border-color: var(--water-crystal);
+        }
+
+        .ability-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .ability-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.4rem;
+            color: var(--water-crystal);
+            margin-bottom: 15px;
+            font-weight: 600;
+            position: relative;
+            z-index: 1;
+        }
+
+        .ability-description {
+            color: var(--pearl-white);
+            line-height: 1.7;
+            font-size: 1.05rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* List Styling */
+        .custom-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .custom-list li {
+            padding: 15px 15px 15px 40px;
+            margin: 10px 0;
+            background: rgba(45, 95, 127, 0.3);
+            border-left: 3px solid var(--water-crystal);
+            border-radius: 0 10px 10px 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .custom-list li:hover {
+            background: rgba(45, 95, 127, 0.5);
+            transform: translateX(5px);
+            border-left-color: var(--celestial-gold);
+        }
+
+        .custom-list li::before {
+            content: '◆';
+            position: absolute;
+            left: 15px;
+            color: var(--celestial-gold);
+            font-size: 12px;
+        }
+
+        /* Relationship Cards */
+        .relationship-card {
+            background: linear-gradient(135deg, rgba(26, 58, 82, 0.6) 0%, rgba(45, 95, 127, 0.4) 100%);
+            padding: 30px;
+            margin: 25px 0;
+            border-radius: 15px;
+            border: 2px solid rgba(74, 144, 226, 0.3);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relationship-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(74, 144, 226, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+
+        .relationship-card:hover {
+            transform: translateX(10px);
+            box-shadow: 0 10px 40px rgba(74, 144, 226, 0.3);
+            border-color: var(--water-crystal);
+        }
+
+        .relationship-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .relationship-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.8rem;
+            color: var(--celestial-gold);
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .relationship-role {
+            font-size: 1.1rem;
+            color: var(--water-foam);
+            font-style: italic;
+        }
+
+        .relationship-type {
+            font-size: 1rem;
+            color: var(--water-crystal);
+            margin: 10px 0;
+            font-weight: 600;
+        }
+
+        .relationship-type::before {
+            content: '⟡ ';
+            color: var(--celestial-gold);
+        }
+
+        .relationship-description {
+            color: var(--pearl-white);
+            line-height: 1.8;
+            font-size: 1.05rem;
+            margin-top: 15px;
+        }
+
+        /* Category Headers */
+        .category-header {
+            background: linear-gradient(90deg, rgba(74, 144, 226, 0.3) 0%, transparent 100%);
+            padding: 20px 30px;
+            margin: 40px 0 30px;
+            border-left: 5px solid var(--water-crystal);
+            border-radius: 0 15px 15px 0;
+            position: relative;
+        }
+
+        .category-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 5px;
+            background: var(--celestial-gold);
+            box-shadow: 0 0 15px var(--celestial-gold);
+        }
+
+        .category-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.4rem, 3vw, 2rem);
+            color: var(--celestial-gold);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(212, 168, 85, 0.2) 0%, rgba(245, 230, 211, 0.1) 100%);
+            border: 2px solid rgba(212, 168, 85, 0.4);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(212, 168, 85, 0.2);
+        }
+
+        .highlight-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.5rem;
+            color: var(--celestial-gold);
+            margin-bottom: 15px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .highlight-content {
+            font-size: 1.1rem;
+            color: var(--pearl-white);
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        /* Summary Box */
+        .summary-box {
+            background: linear-gradient(135deg, rgba(74, 144, 226, 0.3) 0%, rgba(26, 58, 82, 0.5) 100%);
+            border: 3px solid var(--water-crystal);
+            padding: 50px;
+            margin: 50px 0;
+            border-radius: 20px;
+            box-shadow: 
+                0 15px 50px rgba(74, 144, 226, 0.4),
+                inset 0 0 50px rgba(74, 144, 226, 0.1);
+            text-align: center;
+        }
+
+        .summary-title {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            color: var(--celestial-gold);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .summary-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+            color: var(--pearl-white);
+            line-height: 2;
+            margin: 20px 0;
+        }
+
+        .summary-emphasis {
+            display: block;
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            color: var(--water-crystal);
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 80px;
+            border-top: 2px solid rgba(74, 144, 226, 0.3);
+        }
+
+        .footer-divider {
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--celestial-gold), transparent);
+            margin: 20px auto;
+        }
+
+        .copyright {
+            color: var(--water-foam);
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        .author {
+            color: var(--celestial-gold);
+            font-style: italic;
+            font-size: 1.05rem;
+            margin: 5px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+
+            .section {
+                padding: 25px 20px;
+            }
+
+            .hero {
+                padding: 40px 15px 60px;
+            }
+
+            .character-image-container {
+                width: 280px;
+                height: 360px;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .ability-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .relationship-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--ocean-deep);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--water-crystal) 0%, var(--ocean-light) 100%);
+            border-radius: 6px;
+            border: 2px solid var(--ocean-deep);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--water-shine) 0%, var(--water-crystal) 100%);
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Hero Section -->
+        <header class="hero">
+            <h1 class="hero-title">NAERYA DEL ABISMO CELESTE</h1>
+            <p class="hero-subtitle">Hija de la Corriente Divina</p>
+            <div class="hero-divider"></div>
+            <p class="hero-descriptor">La Niña de la Corriente Celeste • Portadora del Equilibrio</p>
+            <div class="hero-divider"></div>
+            <p class="hero-descriptor" style="font-size: 1.1rem; margin-top: 15px; color: var(--water-foam);">
+                Universo 9 | Seres del Noveno Universo (S9U)
+            </p>
+        </header>
+
+        <!-- Character Image Section -->
+        <div class="character-image-section">
+            <div>
+                <div class="character-image-container">
+                    <div class="character-image-placeholder">
+                        <div class="placeholder-icon">🌊</div>
+                        <p class="placeholder-text">Espacio reservado para<br>retrato del personaje</p>
+                    </div>
+                </div>
+                <p class="character-image-caption">Naerya del Abismo Celeste</p>
+            </div>
+        </div>
+
+        <!-- SECTION I: IDENTIDAD ESENCIAL -->
+        <section class="section">
+            <h2 class="section-title">I. IDENTIDAD ESENCIAL</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-label">Nombre Completo</div>
+                    <div class="info-value">Naerya del Abismo Celeste</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Alias Principal</div>
+                    <div class="info-value">Hija de la Corriente Divina</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Título Espiritual</div>
+                    <div class="info-value">La Niña de la Corriente Celeste</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Designación</div>
+                    <div class="info-value">Portadora del Equilibrio</div>
+                </div>
+            </div>
+
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Universo de Origen</td>
+                        <td class="value-cell">Universo 9 (U9)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Planetas Vinculados</td>
+                        <td class="value-cell">Posidonia (Universo 5) • Siul (Universo 9)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Raza / Linaje</td>
+                        <td class="value-cell">Híbrida Interplano: Mitad Siulciana • Mitad Ángel</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Condición Existencial</td>
+                        <td class="value-cell">Híbrida Interplano (Materia + Energía + Luz)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Criada Por</td>
+                        <td class="value-cell">Raza Aquamaris del Universo 5 (Planeta Posidonia)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- SECTION II: DATOS TEMPORALES Y BIOLÓGICOS -->
+        <section class="section">
+            <h2 class="section-title">II. DATOS TEMPORALES Y BIOLÓGICOS</h2>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-label">Edad Real</div>
+                    <div class="info-value">4.200 años posidonianos</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Edad Aparente</div>
+                    <div class="info-value">22 años humanos</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Esperanza de Vida</div>
+                    <div class="info-value">Desconocida / Potencialmente Ilimitada</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Estado Físico</div>
+                    <div class="info-value">Óptimo – Regenerativo</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Estado Espiritual</div>
+                    <div class="info-value">Elevado – En Despertar Progresivo</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION III: ORIGEN Y NACIMIENTO -->
+        <section class="section">
+            <h2 class="section-title">III. ORIGEN Y NACIMIENTO</h2>
+            
+            <h3 class="section-subtitle">Lugar de Manifestación</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Naerya no nació en un espacio físico convencional. Su existencia comenzó <strong style="color: var(--water-crystal);">fuera del plano material</strong>, en un <strong style="color: var(--celestial-gold);">cruce energético entre Siul y Posidonia</strong>. Fue hallada sellada dentro de una burbuja luminosa, flotando en las profundidades cristalinas de Posidonia.
+            </p>
+
+            <h3 class="section-subtitle">Progenitores</h3>
+            <ul class="custom-list">
+                <li><strong style="color: var(--celestial-gold);">Un ángel errante de luz pura</strong></li>
+                <li><strong style="color: var(--celestial-gold);">Una Siulciana bendecida por Gabriel</strong></li>
+            </ul>
+
+            <h3 class="section-subtitle">Evento Fundacional</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Cuando el Consejo Coral la llevó ante el Tridente de la Corriente Eterna, la luz se estremeció y <strong style="color: var(--water-crystal);">Gabriel se manifestó entre las aguas</strong>:
+            </p>
+
+            <div class="quote-box">
+                <p class="quote-text">
+                    Esta niña no pertenece solo a un mundo.<br>
+                    Criadla como hija de las aguas y de la luz,<br>
+                    para que conecte las almas de los océanos y los cielos.
+                </p>
+                <p class="quote-author">— Gabriel, Dios de Siul</p>
+            </div>
+
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Desde ese momento, Naerya fue reconocida como <strong style="color: var(--celestial-gold);">un ser destinado a unir planos, energías y especies</strong>.
+            </p>
+        </section>
+
+        <!-- SECTION IV: APARIENCIA FÍSICA -->
+        <section class="section">
+            <h2 class="section-title">IV. APARIENCIA FÍSICA Y MANIFESTACIÓN</h2>
+            
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Altura</td>
+                        <td class="value-cell">Ajustable según plano</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Complexión</td>
+                        <td class="value-cell">Esbelta – Armónica – Etérea</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Cabello</td>
+                        <td class="value-cell" style="color: var(--water-crystal);">Blanco perlado con reflejos azul-aguamarina, flota como si viviera en su propio océano</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Ojos</td>
+                        <td class="value-cell" style="color: var(--water-crystal);">Azul profundo con destellos dorados – Parecen contener galaxias en movimiento</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Piel</td>
+                        <td class="value-cell">Clara, con brillo nacarado. Mezcla Siulciano-Aquamaris, pero más humana</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Alas</td>
+                        <td class="value-cell" style="color: var(--water-foam); font-style: italic;">Solo visibles para rangos elevados – Filamentos de agua y luz entrelazados (transparentes, flexibles, bellísimas)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="section-subtitle">Presencia y Aura</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Su presencia es <strong style="color: var(--celestial-gold);">luminosa y perceptible emocionalmente</strong>. Quienes la rodean sienten una calma profunda, como si estuvieran cerca de aguas sagradas. Su aura refleja pureza, equilibrio y una conexión directa con lo divino.
+            </p>
+        </section>
+
+        <!-- SECTION V: VESTIMENTA Y EQUIPAMIENTO -->
+        <section class="section">
+            <h2 class="section-title">V. VESTIMENTA Y EQUIPAMIENTO</h2>
+            
+            <h3 class="section-subtitle">Ropaje Habitual</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                <strong style="color: var(--water-crystal);">Tejidos coralinos vivos</strong>, sensibles a su energía. Estos materiales cambian de color según su emoción, nivel de poder o intención, creando un vínculo simbiótico entre Naerya y su vestimenta.
+            </p>
+
+            <h3 class="section-subtitle">Evolución del Vestuario</h3>
+            <table class="data-table">
+                <tbody>
+                    <tr>
+                        <td class="label-cell">Capítulos 1-13</td>
+                        <td class="value-cell">Ropa antigua y desgastada con la capa de Max (símbolo de protección y confianza)</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Capítulo 13 en adelante</td>
+                        <td class="value-cell">Vestimenta de Alisha, antigua guardia Siulciana (Potestad Suprema - SSS)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 class="section-subtitle">Equipamiento Especial</h3>
+            <div class="highlight-box">
+                <h4 class="highlight-title">Cantimplora con Luvia</h4>
+                <p class="highlight-content">
+                    Contiene agua viva vinculada espiritualmente a Naerya. <strong>Luvia es más que agua: es su eco interior, su intuición hecha voz.</strong> Solo Naerya puede escucharla. Representa su esencia posidoniana y su destino como puente entre universos.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION VI: CRIANZA Y FORMACIÓN -->
+        <section class="section">
+            <h2 class="section-title">VI. CRIANZA Y FORMACIÓN</h2>
+            
+            <h3 class="section-subtitle">Clanes Formadores</h3>
+            <p style="font-size: 1.1rem; margin: 20px 0;">Criada por la nobleza acuática de Posidonia, específicamente por:</p>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-label">Clan Aquamaris</div>
+                    <div class="info-value">Guardianes de la sabiduría oceánica</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">Clan Llama Azul</div>
+                    <div class="info-value">Custodios de la energía vital profunda</div>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Formación Principal</h3>
+            
+            <h4 class="section-subheading">Meditación Abisal</h4>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 15px 0;">
+                Entrenamiento en zonas de presión extrema y silencio absoluto, donde la voluntad se moldea y fortalece. Esta práctica desarrolló su capacidad de mantener la calma incluso en las circunstancias más adversas.
+            </p>
+
+            <h4 class="section-subheading">Lectura de Corrientes</h4>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 15px 0;">
+                Desarrolló la habilidad de identificar emociones, ecos espirituales y recuerdos atrapados en el agua. Puede leer corrientes sonoras y vibraciones con precisión extraordinaria.
+            </p>
+
+            <h4 class="section-subheading">Cánticos de Resonancia</h4>
+            <p style="font-size: 1.05rem; line-height: 1.8; margin: 15px 0;">
+                A los 300 años posidonianos ya dominaba completamente esta técnica sagrada, siendo capaz de:
+            </p>
+            <ul class="custom-list">
+                <li>Reconstruir capas energéticas fracturadas</li>
+                <li>Sanar el alma de seres vivos</li>
+                <li>Calmar tormentas internas y externas</li>
+                <li>Armonizar corrientes energéticas y acuáticas</li>
+            </ul>
+
+            <h3 class="section-subtitle">Logros Tempranos</h3>
+            <div class="highlight-box">
+                <p class="highlight-content" style="font-size: 1.15rem; font-style: italic;">
+                    A los 300 años posidonianos, Naerya era capaz de sanar almas, reconstruir capas energéticas y armonizar tormentas físicas y espirituales. <strong>Su presencia iluminaba los mares y su voz armonizaba las corrientes.</strong>
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION VII: PERSONALIDAD Y PSICOLOGÍA -->
+        <section class="section">
+            <h2 class="section-title">VII. PERSONALIDAD Y PSICOLOGÍA</h2>
+            
+            <h3 class="section-subtitle">Rasgos Dominantes</h3>
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-label">✦ Compasión Angelical</div>
+                    <div class="info-value">Empatía profunda con todo ser viviente</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">✦ Calma Posidoniana</div>
+                    <div class="info-value">Serenidad inquebrantable del océano</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">✦ Sensibilidad Espiritual</div>
+                    <div class="info-value">Percepción de planos sutiles</div>
+                </div>
+                <div class="info-card">
+                    <div class="info-label">✦ Sabiduría Intuitiva</div>
+                    <div class="info-value">Conocimiento que fluye naturalmente</div>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Forma de Interactuar</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Naerya es un espíritu sereno, suave y profundamente sabio. <strong style="color: var(--water-crystal);">Habla poco, escucha mucho</strong>. Percibe emociones como corrientes subterráneas. <strong style="color: var(--celestial-gold);">No juzga, comprende</strong>. No conoce el odio, pero entiende profundamente el dolor. No busca el poder, pero fluye con él cuando es necesario.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Cada palabra suya es honesta y profunda. Su presencia transmite paz, como si quienes la rodean estuvieran cerca de aguas sagradas.
+            </p>
+
+            <h3 class="section-subtitle">Conflicto Interno</h3>
+            <div class="highlight-box">
+                <h4 class="highlight-title">La Tensión del Destino</h4>
+                <p class="highlight-content" style="font-style: italic;">
+                    Conciencia de haber sido creada con un propósito específico versus la necesidad de elegir su propio camino. Se cuestiona constantemente su destino, sabiendo que su existencia fue planeada por algo mayor, pero comprendiendo que su camino debe ser elegido por su propio corazón.
+                </p>
+            </div>
+
+            <h3 class="section-subtitle">Frase Sagrada</h3>
+            <div class="quote-box">
+                <p class="quote-text" style="font-size: 1.4rem;">
+                    El agua me enseñó que incluso la oscuridad fluye hacia la luz si encuentra un cauce para hacerlo.
+                </p>
+                <p class="quote-author">— Naerya del Abismo Celeste</p>
+            </div>
+        </section>
+
+        <!-- SECTION VIII: HABILIDADES Y PODERES -->
+        <section class="section">
+            <h2 class="section-title">VIII. HABILIDADES Y PODERES</h2>
+            
+            <h3 class="section-subtitle">Habilidades Activas</h3>
+            <div class="ability-grid">
+                <div class="ability-card">
+                    <span class="ability-icon">🌊</span>
+                    <h4 class="ability-name">Canto del Abismo Celeste</h4>
+                    <p class="ability-description">
+                        Su voz genera vibraciones capaces de <strong>sanar, purificar o destruir</strong>. Es simultáneamente un arma divina y una bendición. El canto puede restaurar almas fragmentadas o desintegrar corrupciones espirituales.
+                    </p>
+                </div>
+                
+                <div class="ability-card">
+                    <span class="ability-icon">💧</span>
+                    <h4 class="ability-name">Purificación de Aguas</h4>
+                    <p class="ability-description">
+                        Restaura mares contaminados, elimina corrupción espiritual y cura corrientes vivientes. Puede limpiar tanto el agua física como la esencia vital contenida en ella.
+                    </p>
+                </div>
+                
+                <div class="ability-card">
+                    <span class="ability-icon">⚡</span>
+                    <h4 class="ability-name">Control del Flujo Vital</h4>
+                    <p class="ability-description">
+                        Manipula la esencia vital contenida en el agua, reforzando cuerpos, almas y estructuras. Puede sellar heridas o quebrar defensas si encuentra la <em>"corriente correcta"</em>.
+                    </p>
+                </div>
+                
+                <div class="ability-card">
+                    <span class="ability-icon">🌀</span>
+                    <h4 class="ability-name">Sincronía de Universos</h4>
+                    <p class="ability-description">
+                        Puede estabilizar o abrir puntos de conexión entre Siul, Posidonia y otros planos. Esta habilidad la convierte en un puente viviente entre mundos.
+                    </p>
+                </div>
+            </div>
+
+            <h3 class="section-subtitle">Habilidades Pasivas</h3>
+            <ul class="custom-list">
+                <li><strong style="color: var(--celestial-gold);">Lectura Emocional del Entorno</strong> – Percibe emociones, intenciones y estados espirituales de quienes la rodean</li>
+                <li><strong style="color: var(--celestial-gold);">Resonancia con Planos Acuáticos</strong> – Conexión natural e instantánea con cualquier cuerpo de agua</li>
+                <li><strong style="color: var(--celestial-gold);">Lectura de Corrientes Temporales</strong> – Puede leer ecos del pasado o futuros probables, siempre a través del agua</li>
+            </ul>
+
+            <h3 class="section-subtitle">Habilidad Potencial: Divinidad Suprema</h3>
+            <div class="highlight-box" style="border-color: rgba(212, 168, 85, 0.6); background: linear-gradient(135deg, rgba(212, 168, 85, 0.25) 0%, rgba(255, 215, 0, 0.15) 100%);">
+                <h4 class="highlight-title" style="font-size: 1.6rem;">Despertar Total de su Linaje</h4>
+                <p class="highlight-content" style="font-size: 1.15rem;">
+                    Permite abrir portales dimensionales, interplanetarios e interuniversales. Esta capacidad la sitúa al nivel de David, siendo una de las pocas entidades con este don.
+                </p>
+                <p class="highlight-content" style="font-size: 1.1rem; font-style: italic; margin-top: 15px; color: var(--water-foam);">
+                    Solo David poseía una capacidad comparable.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION IX: DESTINO Y PROFECÍAS -->
+        <section class="section">
+            <h2 class="section-title">IX. DESTINO, PROFECÍAS Y ROL NARRATIVO</h2>
+            
+            <h3 class="section-subtitle">Profecía Éthria</h3>
+            <div class="prophecy-box">
+                <h4 class="prophecy-title">La Profecía de los Éthrios</h4>
+                <p class="prophecy-text">
+                    Naerya unirá Siul, Kairon y Posidonia.
+                </p>
+                <p class="prophecy-text">
+                    Ella abrirá los portales hacia la Armonía Celeste,
+                </p>
+                <p class="prophecy-text">
+                    y será puente entre los mundos fracturados.
+                </p>
+                <p class="prophecy-text" style="margin-top: 25px; font-size: 1.3rem;">
+                    Cuando los océanos tiemblen y la luz se apague,<br>
+                    la Corriente Divina despertará en ella.
+                </p>
+            </div>
+
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 30px 0;">
+                <strong style="color: var(--celestial-gold);">Los Éthrios</strong> —antiguos seres cuánticos— vieron en ella el futuro del equilibrio multiversal. Su profecía no es una sugerencia: es una certeza que se tejió en el tejido mismo de la realidad.
+            </p>
+
+            <h3 class="section-subtitle">Rol Narrativo</h3>
+            <ul class="custom-list">
+                <li><strong style="color: var(--water-crystal);">Conectora de Planos</strong> – Su existencia misma estabiliza las fracturas entre universos</li>
+                <li><strong style="color: var(--water-crystal);">Corazón de los Portales</strong> – Será la clave para abrir caminos interdimensionales</li>
+                <li><strong style="color: var(--water-crystal);">Equilibrio Vivo</strong> – Representa la armonía entre luz, agua y materia</li>
+            </ul>
+
+            <h3 class="section-subtitle">La Vigilancia de Gabriel</h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin: 20px 0;">
+                Gabriel la vigila desde antes de su nacimiento. Su encuentro con Naerya no fue casualidad, sino <strong style="color: var(--celestial-gold);">parte del despertar del equilibrio entre universos</strong>. Él reconoce en ella un poder que trasciende jerarquías y linajes.
+            </p>
+        </section>
+
+        <!-- SECTION X: RELACIONES IMPORTANTES -->
+        <section class="section">
+            <h2 class="section-title">X. RELACIONES IMPORTANTES</h2>
+            
+            <!-- Relaciones Familiares y de Origen -->
+            <div class="category-header">
+                <h3 class="category-title">Relaciones Familiares y de Origen</h3>
+            </div>
+
+            <div class="relationship-card">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">AERYN</h4>
+                    <p class="relationship-role">Tío – Miembro del Consejo Coral</p>
+                </div>
+                <p class="relationship-type">Guía político • Figura paternal • Protector silencioso</p>
+                <p class="relationship-description">
+                    Fue quien la presentó ante el Tridente de la Corriente Eterna cuando era una bebé celestial. La cuidó como si fuera su propia hija, siendo la figura que más influyó en su educación emocional y espiritual. Es reservado y espiritual. Naerya siempre sintió que Aeryn sabía más sobre su propósito de lo que jamás dijo. Su captura injusta es uno de los motores de la misión de Naerya.
+                </p>
+            </div>
+
+            <div class="relationship-card">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">LIRIEN</h4>
+                    <p class="relationship-role">Prima y Confidente</p>
+                </div>
+                <p class="relationship-type">Hermana del alma • Vínculo emocional estable • Amistad profunda</p>
+                <p class="relationship-description">
+                    Crecieron juntas en Posidonia. Lirien era quien calmaba sus inseguridades, quien la acompañaba en los rituales del agua, y quien la ayudó a comprender su parte humana. Lirien es la única que ve a Naerya como una persona, no como una profecía.
+                </p>
+            </div>
+
+            <div class="relationship-card">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">SELIRA</h4>
+                    <p class="relationship-role">Amiga Posidoniana</p>
+                </div>
+                <p class="relationship-type">Amistad de infancia • Memoria del hogar • Puente emocional con Posidonia</p>
+                <p class="relationship-description">
+                    Selira marcó su adolescencia. Era risueña y aventurera; le contaba historias de otros planetas y le enseñó a escuchar al agua como entidad viva. Su partida al comercio interplanetario fue el primer duelo emocional de Naerya, obligándola a comprender que el destino separa incluso a quienes más amamos.
+                </p>
+            </div>
+
+            <!-- Relaciones de Confianza, Alianza y Despertar -->
+            <div class="category-header">
+                <h3 class="category-title">Relaciones de Confianza, Alianza y Despertar</h3>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(74, 144, 226, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">GABRIEL</h4>
+                    <p class="relationship-role">Guerrero Siulciano – Aliado Inesperado – Figura Celestial Clave</p>
+                </div>
+                <p class="relationship-type">Alianza profunda • Confianza espiritual • Conexión luminosa</p>
+                <p class="relationship-description">
+                    El vínculo entre Naerya y Gabriel se construye a través de heridas compartidas y verdades reveladas en momentos vulnerables. Él fue el primer Siulciano en confiarle secretos del multiverso. Ella lo salvó físicamente, él la salvó emocional y espiritualmente. Confían el uno en el otro sin haberlo buscado: su conexión es espontánea, genuina y necesaria. Para Gabriel, Naerya es la pieza que faltaba en el rompecabezas del destino. Para Naerya, Gabriel es el primer rayo de luz seguro en un mundo desconocido.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(74, 144, 226, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">LUNA (SELENE)</h4>
+                    <p class="relationship-role">Virtud – Protectora – Amiga Silenciosa</p>
+                </div>
+                <p class="relationship-type">Respeto sagrado • Conexión espiritual • Confianza implícita</p>
+                <p class="relationship-description">
+                    Aunque sus interacciones no son tan numerosas, Luna percibe la pureza y el propósito en Naerya desde el inicio. Le explica secretos que pocas entidades conocen y le muestra que el amor, la guía y la divinidad pueden renacer en formas inesperadas. Naerya siente hacia ella una mezcla de admiración, cariño y respeto sagrado.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(74, 144, 226, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">LUVIA</h4>
+                    <p class="relationship-role">Agua Viva de la Cantimplora</p>
+                </div>
+                <p class="relationship-type">Vínculo único • Simbiosis espiritual • Compañera inseparable</p>
+                <p class="relationship-description">
+                    Luvia es más que agua: es su eco interior hecho voz. La guía, la tranquiliza, la protege. Nadie más puede oírla. Luvia representa la intuición de Naerya, su esencia posidoniana, y su destino como puente entre universos. Son inseparables, y juntas logran despertar poderes que ninguna entidad había usado desde David.
+                </p>
+            </div>
+
+            <!-- Relaciones de Misión y Guerra -->
+            <div class="category-header">
+                <h3 class="category-title">Relaciones de Misión y Guerra</h3>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">MAX (MAXIMUS)</h4>
+                    <p class="relationship-role">Ángel Reencarnado – Guerrero Divino</p>
+                </div>
+                <p class="relationship-type">Confianza sincera • Apoyo moral • Vínculo de misión</p>
+                <p class="relationship-description">
+                    Max fue la primera entidad en confiar en ella sin conocerla. La trató como alguien capaz, no como una novata, incluso protegiéndola al cambiarle la capa. Para Naerya, Max representa la valentía sin ego, el sacrificio y la lucha justa. También amabilidad y confianza. Ella siente hacia él una confianza cálida, casi espiritual. No es amor romántico; es respeto puro y destino compartido.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">RADICKS</h4>
+                    <p class="relationship-role">Guerrero Siulciano – Aliado por Extensión</p>
+                </div>
+                <p class="relationship-type">Respeto • Lealtad compartida • Confianza medida</p>
+                <p class="relationship-description">
+                    Al principio, Naerya lo encontraba intimidante. Luego comprendió que Radicks es el corazón fuerte del grupo. Respeta su determinación y su fe en Max. Radicks ve en Naerya un potencial inmenso, pero la trata con cautela, como quien reconoce un poder que aún no despertó del todo.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">SOLEDAD</h4>
+                    <p class="relationship-role">Virtud – Viajera – Guerrera Aérea</p>
+                </div>
+                <p class="relationship-type">Hermandad espontánea • Cariño genuino • Vínculo de espíritu libre</p>
+                <p class="relationship-description">
+                    Soledad fue una chispa en su historia: llegó, la ayudó, la entendió sin pedir nada, la protegió sin cuestionar. Naerya siente hacia ella una conexión cálida y cercana, como una hermana: alegre, empática, natural, sin formalidades. Soledad la trata con un cariño juguetón ("Nayrita"), pero también con respeto a su poder. Juntas enfrentan la sombra de Draegor.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.5);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name">ALISHA</h4>
+                    <p class="relationship-role">Potestad Suprema de la Guardia Imperial (SSS)</p>
+                </div>
+                <p class="relationship-type">Confianza estratégica • Respeto mutuo • Vínculo de protección</p>
+                <p class="relationship-description">
+                    Alisha reconoce en Naerya un poder que supera incluso la jerarquía Siulciana. Le brinda ayuda porque ve verdad y pureza en ella. Para Naerya, Alisha es una gigante en autoridad pero también una mujer con corazón y una guía pragmática dentro del sistema Siulciano. Se convierten en aliadas, y Alisha es clave para que Naerya ingrese al camino correcto.
+                </p>
+            </div>
+
+            <!-- Relaciones de Sombra y Destino -->
+            <div class="category-header">
+                <h3 class="category-title">Relaciones de Sombra y Destino</h3>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(139, 0, 0, 0.5); background: linear-gradient(135deg, rgba(139, 0, 0, 0.15) 0%, rgba(26, 58, 82, 0.6) 100%);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name" style="color: #ff6b6b;">BELCEBÚ</h4>
+                    <p class="relationship-role" style="color: #ff9999;">Virtud Corrompida – Enemigo Político</p>
+                </div>
+                <p class="relationship-type" style="color: #ffcccc;">Intriga • Desconfianza profunda • Choque de destinos</p>
+                <p class="relationship-description">
+                    Belcebú no la entiende. No sabe clasificarla. Ella es la pieza fuera de su tablero. Naerya siente en él una oscuridad latente, una ambición egoísta, y un peligro espiritual. Es la primera figura de poder ante la cual siente verdadero rechazo y alerta.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(139, 0, 0, 0.5); background: linear-gradient(135deg, rgba(139, 0, 0, 0.15) 0%, rgba(26, 58, 82, 0.6) 100%);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name" style="color: #ff6b6b;">DRAEGOR</h4>
+                    <p class="relationship-role" style="color: #ff9999;">Entidad Abisal – Cazador – Antagonista Directo</p>
+                </div>
+                <p class="relationship-type" style="color: #ffcccc;">Amenaza mortal • Persecución ancestral • Espejo oscuro de su poder</p>
+                <p class="relationship-description">
+                    Draegor no quiere matarla por capricho: la busca específicamente a ella, como si su existencia interrumpiera un antiguo plan. Naerya siente en él una energía pesada, antigua, incompatible con la vida. Es su sombra, su prueba, su tormenta.
+                </p>
+            </div>
+
+            <!-- Relaciones de Destino y Sanación -->
+            <div class="category-header">
+                <h3 class="category-title">Relaciones de Destino y Sanación</h3>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.6); background: linear-gradient(135deg, rgba(212, 168, 85, 0.2) 0%, rgba(26, 58, 82, 0.6) 100%);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name" style="color: var(--celestial-gold);">EL LEÓN BLANCO</h4>
+                    <p class="relationship-role" style="color: var(--celestial-light);">Gabriel en su Forma Divina – Dios de Siul</p>
+                </div>
+                <p class="relationship-type" style="color: var(--celestial-light);">Despertar espiritual • Guía paternal-cósmica • Protector del alma</p>
+                <p class="relationship-description">
+                    Este encuentro marcó el renacer de Naerya. Ella lo percibe como un padre espiritual, un dios protector, un guía amoroso, un maestro silencioso. Le revela verdades que ningún ser podría soportar sin quebrarse, pero Naerya no se quiebra... despierta.
+                </p>
+            </div>
+
+            <div class="relationship-card" style="border-color: rgba(212, 168, 85, 0.6); background: linear-gradient(135deg, rgba(212, 168, 85, 0.2) 0%, rgba(26, 58, 82, 0.6) 100%);">
+                <div class="relationship-header">
+                    <h4 class="relationship-name" style="color: var(--celestial-gold);">ANYA</h4>
+                    <p class="relationship-role" style="color: var(--celestial-light);">Sanadora de Aguas – Primer Encuentro del Nuevo Destino</p>
+                </div>
+                <p class="relationship-type" style="color: var(--celestial-light);">Aliada futura • Amiga profética • Hermana del camino acuático</p>
+                <p class="relationship-description">
+                    Anya es el primer ser que la ayuda después del despertar. Su presencia es suave, pura y misteriosa. Para Naerya, Anya será una hermana de propósito, un eco del agua, parte del destino que conecta futuros capítulos. Su encuentro no es casual: es el inicio de una nueva etapa.
+                </p>
+            </div>
+        </section>
+
+        <!-- SECTION XI: RESUMEN NARRATIVO FINAL -->
+        <section class="section">
+            <h2 class="section-title">XI. RESUMEN NARRATIVO FINAL</h2>
+            
+            <div class="summary-box">
+                <h3 class="summary-title">Un Puente Viviente Entre Universos</h3>
+                
+                <p class="summary-text">
+                    Naerya es un puente viviente entre universos. En ella convergen:
+                </p>
+                
+                <p class="summary-emphasis">
+                    • El agua que recuerda •
+                </p>
+                <p class="summary-emphasis">
+                    • La luz que guía •
+                </p>
+                <p class="summary-emphasis">
+                    • La energía que trasciende planos •
+                </p>
+                
+                <p class="summary-text" style="margin-top: 30px; font-style: italic; color: var(--water-foam);">
+                    Su historia no ha comenzado aún: apenas está despertando.
+                </p>
+                
+                <p class="summary-text" style="margin-top: 20px; font-size: 1.6rem; font-weight: 700; color: var(--celestial-gold);">
+                    La Corriente Divina renace en ella.
+                </p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-divider"></div>
+            <p class="copyright">Copyright © 2026 Seres Del Noveno Universo</p>
+            <p class="author">Obra original e intelectual de Jonathan Gabriel Nieto</p>
+            <p class="copyright" style="font-size: 0.9rem; margin-top: 10px;">Todos los derechos reservados</p>
+        </footer>
+    </div>
+</body>
+</html>
