@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>S9U â€” Helios Engine Data v8</title>
+  <meta name="theme-color" content="#02040a">
 
   <!-- Google Fonts: Orbitron (Sci-Fi) & Rajdhani (Tech) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -123,7 +124,7 @@
     <div class="settings-panel" id="settingsPanel">
       <h3><i class="fas fa-sliders-h"></i> &nbsp;CONFIGURACIÓN</h3>
       <!-- Comentario: Tamaño de fuente del sitio. -->
-      <div class="settings-row"><label>Tamaño de texto</label>
+      <div class="settings-row"><span class="settings-label">Tamaño de texto</span>
         <div class="size-btns">
           <button class="size-btn" onclick="setFontSize(12,'S')" id="sizeS">S</button>
           <button class="size-btn active" onclick="setFontSize(14,'M')" id="sizeM">M</button>
@@ -132,7 +133,7 @@
         </div>
       </div>
       <!-- Comentario: Selector de familia tipográfica. -->
-      <div class="settings-row"><label>Familia de fuente</label>
+      <div class="settings-row"><label for="fontFamilySelect" class="settings-label">Familia de fuente</label>
         <select class="font-select" id="fontFamilySelect" onchange="applyFont()">
           <option value="Rajdhani">Rajdhani</option>
           <option value="Exo 2">Exo 2</option>
@@ -142,16 +143,17 @@
         </select>
       </div>
       <!-- Comentario: Activar o desactivar efectos de sonido. -->
-      <div class="settings-row"><label>Sonidos</label>
+      <div class="settings-row"><span class="settings-label">Sonidos</span>
         <div class="settings-toggle">
           <div class="mute-toggle on" id="muteToggle" role="switch" aria-checked="true" onclick="toggleMute()"></div>
           <span class="settings-hint" id="soundStatus">Activo</span>
         </div>
       </div>
       <!-- Comentario: Activar análisis con Gemini si hay clave. -->
-      <div class="settings-row"><label>IA Gemini</label>
+      <div class="settings-row"><span class="settings-label">IA Gemini</span>
         <div class="settings-toggle">
-          <div class="mute-toggle on" id="geminiToggle" role="switch" aria-checked="true" onclick="toggleGemini()"></div>
+          <div class="mute-toggle on" id="geminiToggle" role="switch" aria-checked="true" onclick="toggleGemini()">
+          </div>
           <span class="settings-hint" id="geminiStatus">IA activa</span>
         </div>
       </div>
@@ -159,7 +161,8 @@
       <div class="settings-row"
         style="flex-direction:column;align-items:stretch;gap:8px;margin-top:-4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05)">
         <div style="display:flex;justify-content:space-between;align-items:center">
-          <label style="font-size:11px;opacity:0.7">Clave API (Opcional)</label>
+          <label for="geminiKeyInput" style="font-size:11px;opacity:0.7" class="settings-label">Clave API
+            (Opcional)</label>
           <span id="apiKeyStatus" style="font-size:10px"></span>
         </div>
         <input type="password" id="geminiKeyInput" placeholder="Pegar API Key de Google Gemini..."
@@ -167,23 +170,24 @@
           oninput="onKeyInput()">
       </div>
       <!-- Comentario: Control global de animaciones. -->
-      <div class="settings-row"><label>Animaciones</label>
+      <div class="settings-row"><span class="settings-label">Animaciones</span>
         <div class="settings-toggle">
           <div class="mute-toggle on" id="animsToggle" role="switch" aria-checked="true" onclick="toggleAnims()"></div>
           <span class="settings-hint" id="animsStatus">Animaciones activas</span>
         </div>
       </div>
       <!-- Comentario: Toggle de tema claro/oscuro. -->
-      <div class="settings-row"><label>Modo Claro</label>
+      <div class="settings-row"><span class="settings-label">Modo Claro</span>
         <div class="settings-toggle">
           <div class="mute-toggle" id="themeToggle" role="switch" aria-checked="false" onclick="toggleTheme()"></div>
           <span class="settings-hint" id="themeStatus">Oscuro</span>
         </div>
       </div>
       <!-- Comentario: Guardado automático de progreso. -->
-      <div class="settings-row"><label>Guardado Automático</label>
+      <div class="settings-row"><span class="settings-label">Guardado Automático</span>
         <div class="settings-toggle">
-          <div class="mute-toggle" id="autosaveToggle" role="switch" aria-checked="false" onclick="toggleAutosave()"></div>
+          <div class="mute-toggle" id="autosaveToggle" role="switch" aria-checked="false" onclick="toggleAutosave()">
+          </div>
           <span class="settings-hint" id="autosaveStatus">Manual</span>
         </div>
       </div>
@@ -621,13 +625,18 @@
             </div>
             <div class="history-description">
               <h3>DESCRIPCIÓN DE HISTORIA DEL PERSONAJE</h3>
-              <p>Esta sección sintetiza el tono narrativo y los pilares simbólicos que alimentan el análisis Helios. Usa las 5 etiquetas como anclas conceptuales y completa el texto para que refleje el rol (héroe, villano, neutrales) y el vínculo animal elegido.</p>
-              <p>Los bloques de historia se regeneran con los datos siguientes: etiquetas, apariencia destacada, habilidades clave y resultados del Test de Convergencia. Mantén el lenguaje sensorial y evita repetir frases mecánicas para que Helios produzca una conclusión rica.</p>
+              <p>Esta sección sintetiza el tono narrativo y los pilares simbólicos que alimentan el análisis Helios. Usa
+                las 5 etiquetas como anclas conceptuales y completa el texto para que refleje el rol (héroe, villano,
+                neutrales) y el vínculo animal elegido.</p>
+              <p>Los bloques de historia se regeneran con los datos siguientes: etiquetas, apariencia destacada,
+                habilidades clave y resultados del Test de Convergencia. Mantén el lenguaje sensorial y evita repetir
+                frases mecánicas para que Helios produzca una conclusión rica.</p>
               <ul>
                 <li>Incluye frases que expliquen cómo las etiquetas elegidas moldean su voluntad y destino.</li>
                 <li>Menciona al menos una habilidad o detalle físico para anclarlo al lore.</li>
                 <li>Describe en qué situaciones el vínculo totémico actúa como espejo o guía.</li>
-                <li>Cuando Helios esté activo, la mejora automática refina el flujo; puedes editar el resultado final.</li>
+                <li>Cuando Helios esté activo, la mejora automática refina el flujo; puedes editar el resultado final.
+                </li>
               </ul>
             </div>
           </div>
