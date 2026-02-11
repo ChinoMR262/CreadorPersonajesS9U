@@ -68,6 +68,77 @@
             </div>
         </div>
     </div>
+    <!-- SCROLL TOP BUTTON -->
+    <button id="scrollTopBtn" title="Volver arriba">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <script>
+        // BACK BUTTON LOGIC
+        function goBack() {
+            if (document.referrer && document.referrer.indexOf(window.location.host) !== -1) {
+                history.back();
+            } else {
+                window.location.href = '../index.html';
+            }
+        }
+
+        // SCROLL TOP LOGIC
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+        window.onscroll = function () {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        };
+        scrollTopBtn.onclick = function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+
+        // THEME & ROLE ADAPTATION LOGIC
+        (function () {
+            try {
+                const lsSettings = localStorage.getItem('s9u_helios_engine_data_v8_settings');
+                if (lsSettings) {
+                    const parsed = JSON.parse(lsSettings);
+                    if (parsed && parsed.settings && parsed.settings.theme === 'light') {
+                        document.body.classList.add('light-mode');
+                    }
+                }
+
+                const lsState = localStorage.getItem('s9u_helios_engine_data_v8');
+                if (lsState) {
+                    const parsedState = JSON.parse(lsState);
+                    const realState = parsedState.state || {};
+                    const domState = parsedState.dom || {};
+                    const role = domState.rolNarrativo || realState.rolNarrativo || domState.rol || '';
+                    const rank = domState.rango || realState.rango || '';
+
+                    if (role === 'Villano') document.body.classList.add('villain-mode');
+                    else if (role === 'Héroe') document.body.classList.add('hero-mode');
+                    else if (role === 'AntiHéroe') document.body.classList.add('antihero-mode');
+
+                    const isTabla2 = (parsedState?.state?.rango?.includes('Legendario') || domState?.rango?.includes('Legendario') ||
+                        parsedState?.state?.rango?.includes('Supremo') || domState?.rango?.includes('Supremo') ||
+                        parsedState?.state?.rango?.includes('Initium') || domState?.rango?.includes('Initium'));
+
+                    if (isTabla2) {
+                        document.body.classList.add('gold-mode');
+                    }
+
+                    if (rank === 'Factum Supremo' || rank === 'Factum Legendario' || rank === 'Serafín Legendario') {
+                        if (rank === 'Factum Supremo') document.body.classList.add('supremo-mode');
+                        if (rank === 'Factum Legendario') document.body.classList.add('factum-mode');
+                        if (rank === 'Serafín Legendario') document.body.classList.add('seraphim-mode');
+                        document.body.classList.add('god-mode');
+                    }
+                }
+            } catch (e) {
+                console.error("Error applying theme to policy page:", e);
+            }
+        })();
+    </script>
 </body>
 
 </html>
