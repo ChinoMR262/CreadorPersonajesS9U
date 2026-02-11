@@ -416,7 +416,6 @@ const ANIMALES = [
 ];
 
 const ANIMALES_VILLAIN = [
-  { id: 'cuervo', emoji: '🦅', name: 'Cuervo del Velo', domains: 'Omen / Vigilancia', desc: 'Ave de presagio que observa desde el borde del Velo. El vínculo potencia la lectura de intenciones, el cálculo frío y la capacidad de anticipación.', img: '' },
   { id: 'serpiente', emoji: '🐍', name: 'Serpiente de Luz', domains: 'Transformación / Conocimiento', desc: 'No es la serpiente de las sombras, sino de la luz. Serpentea entre verdades ocultas. El vínculo con ella otorga la capacidad de adaptarse a cualquier situación y descubrir secretos que otros no ven.', img: 'img/sintonia_animal/vinculo_totemico_serpiente_luz.png' },
   { id: 'pantera', emoji: '🐆', name: 'Pantera de Sombras', domains: 'Sigilo / Misterio', desc: 'Se mueve en la penumbra sin ser vista. Su poder está en lo que los demás no detectan. El vínculo despierta la capacidad de actuar con precisión silenciosa y mantener secretos.', img: 'img/sintonia_animal/vinculo_totemico_pantera_sombras.png' },
   { id: 'lobo', emoji: '🐺', name: 'Lobo Lunar', domains: 'Instinto / Manada', desc: 'Caza bajo la luz de la luna con precisión absoluta. Su aullido une a los que están dispersos. El vínculo despierta la lealtad feroz hacia los seres cercanos y un instinto de supervivencia excepcional.', img: 'img/sintonia_animal/vinculo_totemico_lobo_lunar.png' },

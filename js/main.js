@@ -2216,60 +2216,147 @@ function poblarRasgos() {
 // ============================================================
 // BASE DE DATOS DE PREGUNTAS (DINÁMICA — EXTENDIDA PARA VILLANOS)
 // ============================================================
-const QUESTIONS_DB = [
-  // --- GENÉRICO (Respaldo base) ---
-  { id: 'g1', q: 'Ante un conflicto inevitable, ¿cuál es tu primera reacción?', o: ['Atacar primero para asegurar ventaja', 'Buscar una solución diplomática', 'Analizar la debilidad del oponente', 'Proteger a los débiles y esperar'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
-  { id: 'g2', q: '¿Qué valoras más en un aliado?', o: ['Su fuerza bruta', 'Su lealtad inquebrantable', 'Su inteligencia estratégica', 'Su capacidad de sacrificio'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
-  { id: 'g3', q: 'Si pudieras cambiar una cosa del mundo, ¿qué sería?', o: ['Eliminar la debilidad', 'Acabar con la injusticia', 'Revelar todas las verdades', 'Detener el sufrimiento'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
-  { id: 'g4', q: 'Tu mayor miedo es...', o: ['Ser olvidado', 'Perder el control', 'Ser traicionado', 'No poder proteger a nadie'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
-  { id: 'g5', q: 'El poder es para...', o: ['Conquistar', 'Servir', 'Comprender', 'Sobrevivir'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
-  { id: 'g6', q: '¿Cómo enfrentas la soledad?', o: ['La uso para fortalecerme', 'Busco compañía inmediatamente', 'Reflexiono sobre mis planes', 'La acepto como parte del camino'], tags: { u: ['all'], a: ['all'], r: ['all'] } },
+// ============================================================
+// LOGICA DE TEST DE CONVERGENCIA (SISTEMA DINÁMICO)
+// ============================================================
+// Las preguntas alimentan: Light (Moral), Order (Método), Psyche (Empatía)
+const TEST_STATE = {
+  activeQuestions: [],
+  currentIndex: 0,
+  score: { light: 0, order: 0, psyche: 0 }
+};
 
-  // --- ESPECÍFICO DE VILLANO ---
-  { id: 'v1', q: '¿El fin justifica los medios?', o: ['Siempre, si el resultado es grandioso.', 'Solo si no me afecta a mí.', 'No, el honor es primero (Mentira).', 'Los medios son lo único que importa.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v2', q: 'Alguien se interpone en tu camino. Tú...', o: ['Lo destruyo sin pensarlo.', 'Lo manipulo para que se quite solo.', 'Lo hago sufrir antes de acabar con él.', 'Ignoro su existencia y sigo avanzando.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v3', q: '¿Qué opinas de la compasión?', o: ['Una debilidad patética.', 'Una herramienta para manipular tontos.', 'Útil, pero peligrosa.', 'No tengo eso.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v4', q: 'Tu trono ideal estaría hecho de...', o: ['Las armas de mis enemigos caídos.', 'Oro puro y tecnología ancestral.', 'Sombras y secretos.', 'Huesos.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v5', q: 'Te ofrecen poder absoluto a cambio de tu humanidad.', o: ['¿Dónde firmo?', 'Ya la perdí hace tiempo.', 'Lo tomo, y luego los traiciono.', 'Dudo... pero el poder me llama.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v6', q: 'Cuando miras el caos que has provocado, sientes...', o: ['Éxtasis.', 'Satisfacción por el deber cumplido.', 'Indiferencia.', 'Un vacío que pide más.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v7', q: '¿Cuál es la mentira más grande del mundo?', o: ['"El bien siempre triunfa".', '"Todos somos iguales".', '"Existe la justicia".', '"El amor lo cura todo".'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v8', q: 'Tu némesis te suplica piedad.', o: ['Me río y termino el trabajo.', 'Le doy esperanza, luego se la quito.', 'Lo recluto como sirviente.', 'Lo ignoro y me voy.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v9', q: 'La lealtad es...', o: ['Una cadena para los débiles.', 'Algo que se compra.', 'Temporal y condicional.', 'Rara, pero útil.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
-  { id: 'v10', q: '¿Qué harías con un secreto que puede destruir un imperio?', o: ['Lo uso para chantajear al rey.', 'Lo vendo al mejor postor.', 'Lo publico y veo el mundo arder.', 'Lo guardo para el momento perfecto.'], tags: { u: ['all'], a: ['all'], r: ['Villano'] } },
+function startConvergenceTest() {
+  const g = document.getElementById('convergenceGrid');
+  if (!g) return;
+  g.innerHTML = '';
 
-  // --- ESPECÍFICO DE UNIVERSO ---
-  // Anime
-  { id: 'u_anime_1', q: 'En medio del torneo, tu rival revela una técnica prohibida. Tú...', o: ['Sonríes y liberas tu verdadero poder', 'Adviertes al árbitro sobre el peligro', 'Analizas el patrón de su energía', 'Te interpones para que no dañe al público'], tags: { u: ['anime'], a: ['all'], r: ['all'] } },
-  { id: 'u_anime_2', q: 'El villano te ofrece unirte a él para "salvar" el mundo a su manera.', o: ['Jamás. ¡Lo derrotaré aquí y ahora!', 'Le pregunto sus motivos reales', 'Finjo aceptar para traicionarlo luego', 'Dudo... su lógica tiene sentido'], tags: { u: ['anime'], a: ['all'], r: ['all'] } },
-  // D&D
-  { id: 'u_dnd_1', q: 'El grupo encuentra un cofre con runas de advertencia. Tú...', o: ['Lo abro de una patada (Fuerza)', 'Busco trampas con cuidado (Destreza)', 'Intento descifrar la magia (Inteligencia)', 'Advierto que es mejor no tocarlo (Sabiduría)'], tags: { u: ['dnd'], a: ['all'], r: ['all'] } },
-  { id: 'u_dnd_2', q: 'Un dragón bloquea el paso y exige un tributo.', o: ['Desenvaino mi arma. Hoy ceno dragón.', 'Intento persuadirlo o engañarlo.', 'Ofrezco algo de valor por el paso.', 'Busco una ruta alternativa en silencio.'], tags: { u: ['dnd'], a: ['all'], r: ['all'] } },
-  // Star Wars
-  { id: 'u_sw_1', q: 'Sientes una perturbación en la Fuerza.', o: ['La uso para potenciar mi ataque', 'Medito para encontrar su origen', 'Me preparo para defender a mis amigos', 'Dejo que el odio fluya'], tags: { u: ['starwars'], a: ['all'], r: ['all'] } },
-  { id: 'u_sw_2', q: 'Un Lord Sith te ofrece enseñarte a salvar a quienes amas.', o: ['Acepto. El fin justifica los medios.', 'Lo rechazo. Es el camino al Lado Oscuro.', 'Lo escucho para aprender sus debilidades.', 'Ataco antes de que termine la frase.'], tags: { u: ['starwars'], a: ['all'], r: ['all'] } },
-  // Harry Potter
-  { id: 'u_hp_1', q: 'Un hechizo prohibido podría salvar a tu amigo, pero te expulsarían.', o: ['Lo lanzo sin dudar.', 'Busco un contrahechizo legal rápidamente.', 'Pido ayuda a un profesor.', 'Lo uso y borro la memoria de los testigos.'], tags: { u: ['harrypotter'], a: ['all'], r: ['all'] } },
-  // Pokemon
-  { id: 'u_pk_1', q: 'Tu Pokémon está herido pero el líder de gimnasio tiene un solo Pokémon.', o: ['Confío en su espíritu y ataco.', 'Uso una poción aunque pierda el turno.', 'Lo retiro. No vale la pena el riesgo.', 'Uso autodestrucción para el empate.'], tags: { u: ['pokemon'], a: ['all'], r: ['all'] } },
-  // GOT
-  { id: 'u_got_1', q: 'El Rey te ordena ejecutar a un inocente o tu familia sufrirá.', o: ['Ejecuto al inocente. La familia es primero.', 'Me niego y acepto las consecuencias.', 'Planeo una rebelión en secreto.', 'Huyo con mi familia esa noche.'], tags: { u: ['got'], a: ['all'], r: ['all'] } },
+  // 1. Filtrar preguntas válidas de la DB
+  // Usamos la DB global cargada desde js/data/convergence_questions_db.js
+  const db = (typeof CONVERGENCE_QUESTIONS !== 'undefined') ? CONVERGENCE_QUESTIONS : [];
 
-  // --- ESPECÍFICO DE ANIMAL (Totémico) ---
-  // Depredadores (Leon, Lobo, Pantera, Tigre, Aguila)
-  { id: 'a_pred_1', q: 'Tu instinto despierta ante una presa herida.', o: ['Acabo con su sufrimiento rápido.', 'La dejo ir, no es un desafío.', 'Juego con ella antes del final.', 'La protejo de otros depredadores.'], tags: { u: ['all'], a: ['leon', 'lobo', 'pantera', 'tigre', 'aguila'], r: ['all'] } },
-  // Leon
-  { id: 'a_leon_1', q: 'Un joven desafía tu posición en la manada.', o: ['Rugir y demostrar quién manda.', 'Aceptar el reto con honor.', 'Ignorarlo, no es rival.', 'Expulsarlo del territorio.'], tags: { u: ['all'], a: ['leon'], r: ['all'] } },
-  // Lobo
-  { id: 'a_lobo_1', q: 'La manada ha perdido el rastro en la tormenta.', o: ['Tomo la delantera y aúllo.', 'Busco el rastro yo mismo.', 'Espero a que pase la tormenta.', 'Nos agrupamos para darnos calor.'], tags: { u: ['all'], a: ['lobo'], r: ['all'] } },
-  // Aguila/Halcon
-  { id: 'a_fly_1', q: 'Desde las alturas, ves una amenaza que nadie más ve.', o: ['Me lanzo en picada a atacar.', 'Grito para advertir a todos.', 'Observo para entender la amenaza.', 'Calculo el momento exacto para golpear.'], tags: { u: ['all'], a: ['aguila', 'halcon', 'fenix', 'buho', 'paloma'], r: ['all'] } },
-  // Serpiente
-  { id: 'a_serp_1', q: 'Estás acorralado y el enemigo es más fuerte.', o: ['Ataco venenosamente a sus puntos débiles.', 'Me escabullo entre las sombras.', 'Espero el momento de su descuido.', 'Intimido con un siseo advertencia.'], tags: { u: ['all'], a: ['serpiente'], r: ['all'] } },
-  // Tortuga
-  { id: 'a_tort_1', q: 'El ataque es incesante y brutal.', o: ['Me refugio en mi caparazón y resisto.', 'Avanzo lento pero imparable.', 'Espero a que se canse.', 'Contraataco cuando baja la guardia.'], tags: { u: ['all'], a: ['tortuga'], r: ['all'] } },
-  // Buho
-  { id: 'a_buho_1', q: 'La oscuridad oculta la verdad.', o: ['Mis ojos ven lo que otros no.', 'Escucho el silencio.', 'Medito en la oscuridad.', 'Espero a la luz de la luna.'], tags: { u: ['all'], a: ['buho'], r: ['all'] } }
-];
+  const candidates = db.filter(q => {
+    if (!q.cond) return true; // Si no hay condición, es para todos
+
+    // Check Rol
+    if (q.cond.rol) {
+      const currentRol = document.getElementById('rolNarrativo').value;
+      if (!q.cond.rol.includes(currentRol)) return false;
+    }
+
+    // Check MBTI Group (Simplificado)
+    if (q.cond.mbti_group) {
+      // Necesitaríamos saber el grupo MBTI del usuario. 
+      // Por ahora, si no hay MBTI definido, la saltamos o la aceptamos si es 'all'.
+      // TODO: Implementar lógica de grupo MBTI real.
+      return true;
+    }
+
+    return true;
+  });
+
+  // 2. Seleccionar (Mezclar y tomar 10)
+  // Algoritmo de Fisher-Yates shuffle
+  for (let i = candidates.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
+  }
+
+  TEST_STATE.activeQuestions = candidates.slice(0, 10);
+  TEST_STATE.currentIndex = 0;
+  TEST_STATE.score = { light: 0, order: 0, psyche: 0 };
+
+  // UI Setup
+  renderConvergenceQuestion();
+}
+
+function renderConvergenceQuestion() {
+  const g = document.getElementById('convergenceGrid');
+  const q = TEST_STATE.activeQuestions[TEST_STATE.currentIndex];
+
+  if (!q) {
+    finishConvergenceTest();
+    return;
+  }
+
+  g.innerHTML = `
+    <div class="test-question-card fade-in">
+      <div class="tq-header">PREGUNTA ${TEST_STATE.currentIndex + 1} / ${TEST_STATE.activeQuestions.length}</div>
+      <div class="tq-text">${q.q}</div>
+      <div class="tq-options">
+        ${q.o.map((opt, i) => `
+          <button class="tq-btn" onclick="handleTestAnswer(${i})">
+            ${opt.txt}
+          </button>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function handleTestAnswer(optionIndex) {
+  const q = TEST_STATE.activeQuestions[TEST_STATE.currentIndex];
+  const opt = q.o[optionIndex];
+
+  // Sumar Scores
+  if (opt.score) {
+    TEST_STATE.score.light += (opt.score.light || 0);
+    TEST_STATE.score.order += (opt.score.order || 0);
+    TEST_STATE.score.psyche += (opt.score.psyche || 0);
+  }
+
+  // Guardar rasgo si existe y no está repetido (Opcional, bonus)
+  if (opt.traits && state.rasgos.length < 20) {
+    opt.traits.forEach(t => {
+      if (!state.rasgos.includes(t)) state.rasgos.push(t);
+    });
+    // Actualizar UI de rasgos si es necesario
+    poblarRasgos();
+  }
+
+  TEST_STATE.currentIndex++;
+  renderConvergenceQuestion();
+}
+
+function finishConvergenceTest() {
+  const g = document.getElementById('convergenceGrid');
+
+  // Calcular Arquetipo Helios
+  let archetype = null;
+  if (typeof getHeliosArchetype === 'function') {
+    archetype = getHeliosArchetype(TEST_STATE.score);
+  } else {
+    archetype = { title: "Desconocido", desc: "Datos insuficientes.", analysis: "Error en motor Helios." };
+  }
+
+  state.heliosResult = `
+*** ANÁLISIS DE PSIQUE HELIOS ***
+Arquetipo: ${archetype.title}
+Dimensión Moral (Luz): ${TEST_STATE.score.light > 0 ? '+' : ''}${TEST_STATE.score.light}
+Dimensión Estructural (Orden): ${TEST_STATE.score.order > 0 ? '+' : ''}${TEST_STATE.score.order}
+Dimensión Empática (Psique): ${TEST_STATE.score.psyche > 0 ? '+' : ''}${TEST_STATE.score.psyche}
+
+"${archetype.quote || ''}"
+
+Resonancia: ${archetype.desc}
+Análisis Profundo: ${archetype.analysis}
+`;
+
+  g.innerHTML = `
+    <div class="test-result-card fade-in">
+      <h3>CONVERGENCIA COMPLETADA</h3>
+      <div class="tr-archetype">${archetype.title}</div>
+      <div class="tr-desc">${archetype.desc}</div>
+      <hr style="border-color:var(--ui-border); opacity:0.3; margin:15px 0">
+      <div class="tr-analysis">${archetype.analysis}</div>
+      <div class="tr-quote">"${archetype.quote}"</div>
+      <button class="act-btn" style="margin-top:20px; width:100%" onclick="startConvergenceTest()">RECALIBRAR (Repetir Test)</button>
+    </div>
+  `;
+
+  // Actualizar estado global y check de validación
+  checkValidation();
+}
 
 const PROJECT_FOCUS_OPTIONS = [
   { id: 'arte', label: 'Arte + Narrativa', subtitle: 'Expresión simbólica' },
@@ -4448,3 +4535,23 @@ function preloadAssets() {
 window.addEventListener('load', () => {
   setTimeout(preloadAssets, 3000);
 });
+
+/* ============================================================
+   INTEGRACIÓN CON GENERADOR DE FICHAS (V2)
+   ============================================================ */
+function abrirFichaGenerada() {
+  if (typeof DB_FICHA === 'undefined') {
+    alert("Error: No se encontró el módulo de base de datos (db_ficha.js).");
+    return;
+  }
+
+  // 1. Usar el mapeador para obtener el objeto completo
+  // Pasamos 'state' global que contiene la info de la app
+  const datosFicha = DB_FICHA.generarDatosFicha(state);
+
+  // 2. Guardar en LocalStorage con la clave que usa el generador
+  localStorage.setItem('S9U_Ficha_Gen_v2', JSON.stringify(datosFicha));
+
+  // 3. Abrir en nueva pestaña
+  window.open('ficha_personaje_final/ficha_a_generar/ficha_completa.html', '_blank');
+}
