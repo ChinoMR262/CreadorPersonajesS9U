@@ -161,16 +161,17 @@
         </div>
       </div>
       <!-- Comentario: Campo para pegar la API Key (opcional). -->
-      <form onsubmit="return false;" class="settings-row"
-        style="flex-direction:column;align-items:stretch;gap:8px;margin-top:-4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05)">
+      <form id="apiKeyForm" class="settings-row"
+        style="flex-direction:column;align-items:stretch;gap:8px;margin-top:-4px;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.05)"
+        onsubmit="handleApiKeySubmit(event)">
         <div style="display:flex;justify-content:space-between;align-items:center">
           <label for="geminiKeyInput" style="font-size:11px;opacity:0.7" class="settings-label">Clave API
             (Opcional)</label>
           <span id="apiKeyStatus" style="font-size:10px"></span>
         </div>
-        <input type="password" id="geminiKeyInput" placeholder="Pegar API Key de Google Gemini..."
+        <input type="password" id="geminiKeyInput" name="geminiKey" placeholder="Pegar API Key de Google Gemini..."
           style="background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px;font-family:'Share Tech Mono';font-size:11px;border-radius:4px;outline:none;width:100%"
-          oninput="onKeyInput()" autocomplete="on">
+          oninput="onKeyInput()" autocomplete="off">
       </form>
       <!-- Comentario: Control global de animaciones. -->
       <div class="settings-row"><span class="settings-label">Animaciones</span>
@@ -1121,10 +1122,12 @@
             <button class="act-btn btn-pdf" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> EXPORTAR PDF</button>
             <button class="act-btn btn-reset" onclick="resetAll()"><i class="fas fa-sync-alt"></i> REINICIAR
               HELIOS</button>
-            <button class="act-btn"
-              style="background: linear-gradient(90deg, #d4a855 0%, #b8860b 100%); color: #000; font-weight:bold; border:none; margin-top:10px"
-              onclick="abrirFichaGenerada()"><i class="fas fa-external-link-alt"></i> VER FICHA COMPLETA
-              GENERADA</button>
+            <div id="fichaCompletaContainer" style="display:none;">
+              <button class="act-btn"
+                style="background: linear-gradient(90deg, #d4a855 0%, #b8860b 100%); color: #000; font-weight:bold; border:none; margin-top:10px"
+                onclick="abrirFichaGenerada()"><i class="fas fa-external-link-alt"></i> VER FICHA COMPLETA
+                GENERADA</button>
+            </div>
           </div>
           <div id="footer-container"></div>
           <div style="display:flex;flex-direction:column;gap:10px">
