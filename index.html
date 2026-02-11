@@ -1121,6 +1121,10 @@
             <button class="act-btn btn-pdf" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> EXPORTAR PDF</button>
             <button class="act-btn btn-reset" onclick="resetAll()"><i class="fas fa-sync-alt"></i> REINICIAR
               HELIOS</button>
+            <button class="act-btn"
+              style="background: linear-gradient(90deg, #d4a855 0%, #b8860b 100%); color: #000; font-weight:bold; border:none; margin-top:10px"
+              onclick="abrirFichaGenerada()"><i class="fas fa-external-link-alt"></i> VER FICHA COMPLETA
+              GENERADA</button>
           </div>
           <div id="footer-container"></div>
           <div style="display:flex;flex-direction:column;gap:10px">
@@ -1160,6 +1164,11 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <!-- Helios Data: Ensure this file is present in js directory. Falling back to root if needed. -->
   <script src="js/helios_data.js"></script>
+  <script src="js/data/convergence_questions_db.js"></script>
+  <script src="js/data/helios_psyche_db.js"></script>
+  <script src="js/convergence_data.js"></script>
+  <script src="js/helios_psyche_data.js"></script>
+  <script src="js/story_data.js"></script>
   <script src="js/main.js"></script>
   <!-- Comentario: Script del modulo MBTI (archivo reservado, no borrar). -->
   <script src="js/PersonalidadMBTI.js"></script>
@@ -1270,6 +1279,7 @@
       });
     });
   </script>
+  <script src="js/db_ficha.js"></script>
 </body>
 
 </html>
