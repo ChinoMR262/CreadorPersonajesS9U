@@ -619,6 +619,20 @@ const SCENES_ALTERNATIVOS = {
 // - Importante: no se persiste a disco; un reload reinicia todo.
 let state = { rels: [], hobbies: [], detesta: [], deseos: [], rasgos: [], saludos: {}, mbti: { type: '', mode: 'cards', quiz: {}, narrative: {}, ai: '' }, etiquetas: [], historia: null, historiaCompleta: null, heliosStory: null, altura: '', vestimenta: {}, apariencia: { cabello: '', ojos: '', piel: '', alas: '', ropaje: '', extra: '', _auto: true }, habilidades: [], villain: { motivacion: '', objetivo: '', metodos: '', debilidad: '', crueldad: '' }, settings: { useGemini: true, anims: true }, test: {}, testMeta: { logic: 0, emotion: 0, creativity: 0, ethics: 0, conflict: 0 }, projectFocus: 'arte', animal: null, dialogueLogs: {}, relDescCursor: {}, styleHistory: [], heliosResult: null };
 
+// --- Capacitor Preferences Bridge ---
+// Promise that resolves when storage is ready (prefs loaded or verified)
+window.storageReady = (async () => {
+  try {
+    if (window.CapPreferences) {
+      console.log("Capacitor Preferences detected.");
+    } else {
+      console.log("Capacitor Preferences NOT detected. Using localStorage.");
+    }
+  } catch (e) {
+    console.error("Storage checks failed:", e);
+  }
+})();
+
 const LS_KEY = 's9u_helios_engine_data_v8';
 const LS_KEY_SETTINGS = 's9u_helios_engine_data_v8_settings';
 let _saveT = null;
@@ -627,7 +641,7 @@ function scheduleSave() {
   if (_saveT) clearTimeout(_saveT);
   _saveT = setTimeout(() => saveToLocalStorage(), 450);
 }
-function saveSettingsToLocalStorage() {
+async function saveSettingsToLocalStorage() {
   try {
     const s = state?.settings || {};
     const payload = {
@@ -638,12 +652,24 @@ function saveSettingsToLocalStorage() {
         theme: (s.theme === 'light') ? 'light' : 'dark'
       }
     };
-    localStorage.setItem(LS_KEY_SETTINGS, JSON.stringify(payload));
-  } catch (e) { }
+    const val = JSON.stringify(payload);
+    if (window.CapPreferences) {
+      await window.CapPreferences.set({ key: LS_KEY_SETTINGS, value: val });
+    }
+    // Always sync to localStorage for rapid access if needed, or backward compat
+    localStorage.setItem(LS_KEY_SETTINGS, val);
+  } catch (e) { console.error("Error saving settings:", e); }
 }
-function loadSettingsFromLocalStorage() {
+async function loadSettingsFromLocalStorage() {
   try {
-    const raw = localStorage.getItem(LS_KEY_SETTINGS);
+    let raw = null;
+    if (window.CapPreferences) {
+      const res = await window.CapPreferences.get({ key: LS_KEY_SETTINGS });
+      raw = res.value;
+    }
+    // Fallback or legacy load
+    if (!raw) raw = localStorage.getItem(LS_KEY_SETTINGS);
+
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object') return null;
@@ -652,7 +678,7 @@ function loadSettingsFromLocalStorage() {
     return null;
   }
 }
-function saveToLocalStorage() {
+async function saveToLocalStorage() {
   try {
     const dom = {};
     document.querySelectorAll('input[id],select[id],textarea[id]').forEach(el => {
@@ -660,12 +686,23 @@ function saveToLocalStorage() {
       dom[el.id] = el.value;
     });
     const payload = { v: 1, ts: Date.now(), state, dom };
-    localStorage.setItem(LS_KEY, JSON.stringify(payload));
-  } catch (e) { }
+    const val = JSON.stringify(payload);
+
+    if (window.CapPreferences) {
+      await window.CapPreferences.set({ key: LS_KEY, value: val });
+    }
+    localStorage.setItem(LS_KEY, val);
+  } catch (e) { console.error("Error saving state:", e); }
 }
-function loadFromLocalStorage() {
+async function loadFromLocalStorage() {
   try {
-    const raw = localStorage.getItem(LS_KEY);
+    let raw = null;
+    if (window.CapPreferences) {
+      const res = await window.CapPreferences.get({ key: LS_KEY });
+      raw = res.value;
+    }
+    if (!raw) raw = localStorage.getItem(LS_KEY);
+
     if (!raw) return null;
     const parsed = JSON.parse(raw);
     if (!parsed || typeof parsed !== 'object') return null;

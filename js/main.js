@@ -42,7 +42,7 @@ function unlockAudio(force = false) {
   if (!AudioCtx) return Promise.resolve(null);
   const canActivate = force || hasUserActivation();
   if (!audioCtx) {
-    if (!canActivate) return Promise.resolve(null);
+    if (!canActivate && !force) return Promise.resolve(null);
     audioCtx = new AudioCtx();
   }
   if (audioCtx.state === 'suspended') {
@@ -320,12 +320,13 @@ function poblarVillainPresets() {
 // ============================================================
 // Arranque principal del motor.
 // Orden importante: defaults -> poblar UI -> inicializar listeners -> validar.
-window.initHelios = () => {
-  const loadedSettings = loadSettingsFromLocalStorage();
+window.initHelios = async () => {
+  if (window.storageReady) await window.storageReady; // Ensure preferences are ready
+  const loadedSettings = await loadSettingsFromLocalStorage();
   if (loadedSettings && typeof loadedSettings === 'object') {
     state.settings = { ...state.settings, ...loadedSettings };
   }
-  const loaded = loadFromLocalStorage();
+  const loaded = await loadFromLocalStorage();
   if (loaded?.state && typeof loaded.state === 'object') {
     state = { ...state, ...loaded.state, settings: { ...state.settings, ...(loaded.state.settings || {}) } };
   }
