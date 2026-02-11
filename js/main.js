@@ -21,18 +21,74 @@ window.addEventListener('beforeunload', () => { window.scrollTo(0, 0); });
 const AudioCtx = window.AudioContext || window.webkitAudioContext;
 let audioCtx = null;
 let soundEnabled = true;
+let audioUnlocked = false;
+let removeAudioUnlockListeners = null;
 
-// Inicializa o recupera el contexto. Si está suspendido por política del navegador, intenta reanudar.
+function hasUserActivation() {
+  if (!('userActivation' in navigator)) return false;
+  return !!navigator.userActivation?.isActive;
+}
+
+// Devuelve el contexto solo si ya está desbloqueado y ejecutando.
 function getACtx() {
-  if (!audioCtx) audioCtx = new AudioCtx();
-  if (audioCtx.state === 'suspended') audioCtx.resume().catch(() => { });
+  if (!audioCtx) return null;
+  if (audioCtx.state !== 'running') return null;
+  audioUnlocked = true;
   return audioCtx;
 }
 
-// Listener global para desbloquear el audio en la primera interacción del usuario
-document.addEventListener('click', () => {
-  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-}, { once: true });
+// Crea/reanuda AudioContext durante un gesto real.
+function unlockAudio(force = false) {
+  if (!AudioCtx) return Promise.resolve(null);
+  const canActivate = force || hasUserActivation();
+  if (!audioCtx) {
+    if (!canActivate) return Promise.resolve(null);
+    audioCtx = new AudioCtx();
+  }
+  if (audioCtx.state === 'suspended') {
+    if (!canActivate) return Promise.resolve(null);
+    return audioCtx.resume().catch(() => { }).then(() => {
+      audioUnlocked = audioCtx.state === 'running';
+      if (audioUnlocked && removeAudioUnlockListeners) {
+        removeAudioUnlockListeners();
+        removeAudioUnlockListeners = null;
+      }
+      return audioUnlocked ? audioCtx : null;
+    });
+  }
+  audioUnlocked = audioCtx.state === 'running';
+  if (audioUnlocked && removeAudioUnlockListeners) {
+    removeAudioUnlockListeners();
+    removeAudioUnlockListeners = null;
+  }
+  return Promise.resolve(audioUnlocked ? audioCtx : null);
+}
+
+// Intenta desbloquear audio en cualquier gesto del usuario.
+// Intenta desbloquear audio en un gesto explícito del usuario.
+function setupAudioUnlock() {
+  const unlock = async (e) => {
+    // Evitar múltiples llamadas si ya está desbloqueado
+    if (audioCtx && audioCtx.state === 'running') {
+      if (removeAudioUnlockListeners) removeAudioUnlockListeners();
+      return;
+    }
+    await unlockAudio(true);
+  };
+
+  // Usar 'click' y 'keydown' que son los gestos más seguros y reconocidos
+  // 'passive: false' es crucial para que el navegador confíe en el evento
+  const opts = { capture: true, passive: false, once: true };
+
+  document.addEventListener('click', unlock, opts);
+  document.addEventListener('keydown', unlock, opts);
+
+  removeAudioUnlockListeners = () => {
+    document.removeEventListener('click', unlock, opts);
+    document.removeEventListener('keydown', unlock, opts);
+  };
+}
+setupAudioUnlock();
 
 // Reproduce un tono simple
 // f: frecuencia, d: duración, t: tipo de onda, v: volumen
@@ -40,6 +96,10 @@ function playTone(f, d, t = 'sine', v = .15) {
   if (!soundEnabled) return;
   try {
     const a = getACtx();
+    if (!a || !audioUnlocked) {
+      if (hasUserActivation()) unlockAudio();
+      return;
+    }
     const o = a.createOscillator();
     const g = a.createGain();
     o.type = t;
@@ -275,14 +335,15 @@ window.initHelios = () => {
   initRolNarrativo();
   initRangoTheme();
   initScrollTopBtn();
-  adjustLayout(); window.addEventListener('resize', adjustLayout);
+  initRangoTheme();
+  initScrollTopBtn();
   if (loaded?.dom) applyLoadedDOM(loaded.dom);
   document.addEventListener('input', scheduleSave, true);
   document.addEventListener('change', scheduleSave, true);
   window.addEventListener('beforeunload', () => { if (state?.settings?.autosave) saveToLocalStorage() });
   // Se eliminó el sonido automático para evitar advertencias de AudioContext
 };
-function adjustLayout() { document.getElementById('mainGrid').style.gridTemplateColumns = window.innerWidth >= 1024 ? '1fr 380px' : '1fr' }
+
 
 function isTabla2Rank(rankName) {
   const g = RANGOS.find(x => String(x.g || '').includes('TABLA 2'));
@@ -691,12 +752,12 @@ function limpiarCampos() {
   state.etiquetas = [];
   state.historia = null;
   state.historiaCompleta = '';
-    state.hobbies = [];
-    state.detesta = [];
-    state.deseos = [];
-    state.rasgos = [];
-    resetConvergenceState();
-    state.testRole = '';
+  state.hobbies = [];
+  state.detesta = [];
+  state.deseos = [];
+  state.rasgos = [];
+  resetConvergenceState();
+  state.testRole = '';
   state.animal = null;
   state.villain = {};
   state.prevRolNarrativo = '';
@@ -1092,6 +1153,7 @@ function setVestimenta(catId, val) {
   checkValidation();
 }
 function selectAnimal(id, silent = false) {
+  const isMobile = window.innerWidth <= 768;
   // Deseleccionar todo
   document.querySelectorAll('.animal-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('animalNone').classList.remove('selected');
@@ -1099,8 +1161,65 @@ function selectAnimal(id, silent = false) {
   else { state.animal = id; document.getElementById('ac_' + id).classList.add('selected') }
   if (!silent) snd('sel');
   updateAnimalBackground();
+  // Pass pre-calculated isMobile to avoid reading innerWidth after style invalidation
+  setTimeout(() => requestAnimationFrame(() => updateAnimalPanelPosition(isMobile)), 0);
   checkValidation();
 }
+
+function updateAnimalPanelPosition(forceIsMobile = null) {
+  const isMobile = forceIsMobile !== null ? forceIsMobile : (window.innerWidth <= 768);
+  const panel = document.querySelector('.animal-section__panel');
+  const section = document.querySelector('.animal-section');
+  const grid = document.getElementById('animalGrid');
+  const selectedId = state.animal;
+
+  if (!panel || !section || !grid) return;
+
+  // Mobile logic: Move panel after selected card
+  if (isMobile && selectedId) {
+    const card = document.getElementById('ac_' + selectedId);
+    if (card && card.parentNode === grid) {
+      if (panel.previousElementSibling !== card) {
+        card.after(panel);
+        panel.style.gridColumn = '1 / -1';
+        panel.style.width = '100%';
+        panel.style.marginTop = '16px';
+        panel.style.marginBottom = '24px';
+        panel.style.order = 'unset'; // Reset any CSS order
+
+        // Ensure it's visible if it was hidden or anything
+        // Wrap in requestAnimationFrame to avoid forced reflow (reading layout immediately after writing)
+        requestAnimationFrame(() => {
+          panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      }
+      return;
+    }
+  }
+
+  // Desktop/Default logic: Restore to original position (right column)
+  // The original structure is: .animal-section > .animal-section__content + .animal-section__panel
+  // We append it to .animal-section to put it back at the end.
+  if (panel.parentNode !== section) {
+    section.appendChild(panel);
+    // Reset inline styles
+    panel.style.gridColumn = '';
+    panel.style.width = '';
+    panel.style.marginTop = '';
+    panel.style.marginBottom = '';
+    panel.style.order = ''; // Restore CSS default (which might be -1 on tablet)
+  }
+}
+
+// Ensure resize handles it too
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(() => {
+    updateAnimalPanelPosition();
+  }, 100);
+});
+
 function getAnimal() {
   const list = getAnimalesList();
   return state.animal ? list.find(a => a.id === state.animal) : null;
@@ -1304,8 +1423,8 @@ const RELACION_DESC_VARIANTS = {
   ]
 };
 
-const RELACION_MALE_TYPES = new Set(['padre','papá','papa','hermano','tío','tio','abuelo','primo','compañero','companero','mejor amigo','amigo','cuñado','cunado','sobrino','sobrino']);
-const RELACION_FEMALE_TYPES = new Set(['madre','mamá','mama','hermana','tía','tia','abuela','prima','compañera','companera','mejor amiga','amiga','cuñada','cunada','sobrina','sobrina']);
+const RELACION_MALE_TYPES = new Set(['padre', 'papá', 'papa', 'hermano', 'tío', 'tio', 'abuelo', 'primo', 'compañero', 'companero', 'mejor amigo', 'amigo', 'cuñado', 'cunado', 'sobrino', 'sobrino']);
+const RELACION_FEMALE_TYPES = new Set(['madre', 'mamá', 'mama', 'hermana', 'tía', 'tia', 'abuela', 'prima', 'compañera', 'companera', 'mejor amiga', 'amiga', 'cuñada', 'cunada', 'sobrina', 'sobrina']);
 
 function determineRelationPronoun(tipo) {
   if (!tipo) return 'Quien';
