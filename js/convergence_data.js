@@ -1,3 +1,3 @@
 const CONVERGENCE_DATA = {
-    // Placeholder for missing data
+    // Marcador de posición para datos faltantes
 };

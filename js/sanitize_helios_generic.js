@@ -8,16 +8,16 @@ const path = require('path');
 const filePath = path.join(__dirname, 'helios_data.js');
 
 try {
-    console.log("Reading file...");
+    console.log("Leyendo archivo...");
     const data = fs.readFileSync(filePath, 'utf8');
-    console.log("File read. Splitting...");
+    console.log("Archivo leído. Dividiendo...");
     const lines = data.split('\n');
-    console.log(`Total lines: ${lines.length}`);
+    console.log(`Lineas totales: ${lines.length}`);
 
     let dirty = false;
     const newLines = lines.map((line, index) => {
         if (line.length > 5000 && line.includes('data:image')) {
-            console.log(`Line ${index + 1} is massive (${line.length} chars). Cleaning...`);
+            console.log(`La línea ${index + 1} es masiva (${line.length} caracteres). Limpiando...`);
 
             // Intentar extraer ID y nombre para reconstruir una linea segura.
             const idMatch = line.match(/id:\s*'([^']+)'/);
@@ -32,29 +32,29 @@ try {
                 const replaced = line.replace(/img:\s*['"]data:image\/[^'"]+['"]/g, "img: ''");
 
                 if (replaced.length < 1000) {
-                    console.log(`  -> Cleaned via regex. New length: ${replaced.length}`);
+                    console.log(`  -> Limpiado vía regex. Nueva longitud: ${replaced.length}`);
                     dirty = true;
                     return replaced;
                 } else {
-                    console.log(`  -> Regex result still large (${replaced.length}). Nuke and reconstruct.`);
+                    console.log(`  -> Resultado Regex aún grande (${replaced.length}). Eliminar y reconstruir.`);
                     dirty = true;
-                    return `      { id: '${id}', name: '${name}', img: '' }, // Auto-sanitized massive line`;
+                    return `      { id: '${id}', name: '${name}', img: '' }, // Línea masiva auto-sanitizada`;
                 }
             } else {
-                console.log("  -> Could not identify ID. Replacing with empty comment.");
+                console.log("  -> No se pudo identificar ID. Reemplazando con comentario vacío.");
                 dirty = true;
-                return "// [Deleted massive line with no ID]";
+                return "// [Línea masiva eliminada sin ID]";
             }
         }
         return line;
     });
 
     if (dirty) {
-        console.log("Writing sanitized file...");
+        console.log("Escribiendo archivo sanitizado...");
         fs.writeFileSync(filePath, newLines.join('\n'), 'utf8');
-        console.log('Successfully sanitized helios_data.js');
+        console.log('helios_data.js sanitizado exitosamente');
     } else {
-        console.log('No massive lines found to clean.');
+        console.log('No se encontraron líneas masivas para limpiar.');
     }
 
 } catch (err) {

@@ -143,7 +143,7 @@ function sndRol(role) {
 }
 
 // ============================================================
-// CONFIGURACIÓN (SETTINGS)
+// CONFIGURACIÓN (AJUSTES)
 // ============================================================
 function toggleSettings() { document.getElementById('settingsPanel').classList.toggle('open') }
 document.addEventListener('click', e => { const p = document.getElementById('settingsPanel'), g = document.querySelector('.gear-btn'); if (!p.contains(e.target) && !g.contains(e.target)) p.classList.remove('open') });
@@ -203,7 +203,7 @@ function toggleMute() {
   snd('sel');
 }
 // Comentario: Clave de Gemini (se lee desde LocalStorage si existe).
-// Gemini API key
+// Clave API de Gemini
 // Clave API de Gemini - Se carga desde LocalStorage o está vacía
 let geminiKey = localStorage.getItem('gemini_api_key') || '';
 
@@ -300,7 +300,7 @@ function handleVillainSelectChange(key) {
   }
   if (val) {
     state.villain[key] = val;
-    // Convert to editable input after selection
+    // Convertir a entrada editable tras la selección
     const inp = document.createElement('input');
     inp.type = 'text';
     inp.className = 'inp';
@@ -324,12 +324,12 @@ function poblarVillainPresets() {
 }
 
 // ============================================================
-// INICIALIZACIÓN (INIT)
+// INICIALIZACIÓN (INICIO)
 // ============================================================
 // Arranque principal del motor.
 // Orden importante: defaults -> poblar UI -> inicializar listeners -> validar.
 window.initHelios = async () => {
-  if (window.storageReady) await window.storageReady; // Ensure preferences are ready
+  if (window.storageReady) await window.storageReady; // Asegurar que las preferencias estén listas
   const loadedSettings = await loadSettingsFromLocalStorage();
   if (loadedSettings && typeof loadedSettings === 'object') {
     state.settings = { ...state.settings, ...loadedSettings };
@@ -391,7 +391,7 @@ function initRangoTheme() {
   const sel = document.getElementById('rango');
   if (!sel) return;
   sel.addEventListener('change', applyRangoTheme);
-  // Ensure we apply logic on init
+  // Asegurar aplicación de lógica al inicio
   applyRangoTheme();
 }
 
@@ -1170,7 +1170,7 @@ function selectAnimal(id, silent = false) {
   else { state.animal = id; document.getElementById('ac_' + id).classList.add('selected') }
   if (!silent) snd('sel');
   updateAnimalBackground();
-  // Pass pre-calculated isMobile to avoid reading innerWidth after style invalidation
+  // Pasar isMobile precalculado para evitar leer innerWidth tras invalidación de estilo
   setTimeout(() => requestAnimationFrame(() => updateAnimalPanelPosition(isMobile)), 0);
   checkValidation();
 }
@@ -1184,7 +1184,7 @@ function updateAnimalPanelPosition(forceIsMobile = null) {
 
   if (!panel || !section || !grid) return;
 
-  // Mobile logic: Move panel after selected card
+  // Lógica móvil: Mover panel tras tarjeta seleccionada
   if (isMobile && selectedId) {
     const card = document.getElementById('ac_' + selectedId);
     if (card && card.parentNode === grid) {
@@ -1194,7 +1194,7 @@ function updateAnimalPanelPosition(forceIsMobile = null) {
         panel.style.width = '100%';
         panel.style.marginTop = '16px';
         panel.style.marginBottom = '24px';
-        panel.style.order = 'unset'; // Reset any CSS order
+        panel.style.order = 'unset'; // Restablecer cualquier orden CSS
 
         // Ensure it's visible if it was hidden or anything
         // Wrap in requestAnimationFrame to avoid forced reflow (reading layout immediately after writing)
@@ -1216,11 +1216,11 @@ function updateAnimalPanelPosition(forceIsMobile = null) {
     panel.style.width = '';
     panel.style.marginTop = '';
     panel.style.marginBottom = '';
-    panel.style.order = ''; // Restore CSS default (which might be -1 on tablet)
+    panel.style.order = ''; // Restaurar CSS por defecto (podría ser -1 en tablet)
   }
 }
 
-// Ensure resize handles it too
+// Asegurar que el redimensionamiento también lo maneje
 let resizeTimeout;
 window.addEventListener('resize', () => {
   clearTimeout(resizeTimeout);
@@ -2246,13 +2246,13 @@ function startConvergenceTest() {
   const candidates = db.filter(q => {
     if (!q.cond) return true; // Si no hay condición, es para todos
 
-    // Check Rol
+    // Verificar Rol
     if (q.cond.rol) {
       const currentRol = document.getElementById('rolNarrativo').value;
       if (!q.cond.rol.includes(currentRol)) return false;
     }
 
-    // Check MBTI Group (Simplificado)
+    // Verificar Grupo MBTI (Simplificado)
     if (q.cond.mbti_group) {
       // Necesitaríamos saber el grupo MBTI del usuario. 
       // Por ahora, si no hay MBTI definido, la saltamos o la aceptamos si es 'all'.
@@ -2274,7 +2274,7 @@ function startConvergenceTest() {
   TEST_STATE.currentIndex = 0;
   TEST_STATE.score = { light: 0, order: 0, psyche: 0 };
 
-  // UI Setup
+  // Configuración de UI
   renderConvergenceQuestion();
 }
 
@@ -2306,7 +2306,7 @@ function handleTestAnswer(optionIndex) {
   const q = TEST_STATE.activeQuestions[TEST_STATE.currentIndex];
   const opt = q.o[optionIndex];
 
-  // Sumar Scores
+  // Sumar Puntuaciones
   if (opt.score) {
     TEST_STATE.score.light += (opt.score.light || 0);
     TEST_STATE.score.order += (opt.score.order || 0);
@@ -2839,7 +2839,7 @@ function gatherLegacyQuestions(ctx, limit) {
   if (selected.length < limit && typeof PREGUNTAS_TEST !== 'undefined' && Array.isArray(PREGUNTAS_TEST)) {
     PREGUNTAS_TEST.forEach((q, idx) => {
       if (selected.length >= limit) return;
-      // Ensure unique ID for legacy array items
+      // Asegurar ID único para ítems array heredados
       const legacyId = `legacy_p_${idx}`;
       if (seen.has(legacyId)) return;
 
@@ -2852,7 +2852,7 @@ function gatherLegacyQuestions(ctx, limit) {
   let guard = 0;
   while (selected.length < limit && filler.length && guard < 200) {
     const candidate = filler[Math.floor(Math.random() * filler.length)];
-    if (!candidate) { guard++; continue; } // Safety
+    if (!candidate) { guard++; continue; } // Seguridad
 
     if (seen.has(candidate.id)) {
       guard += 1;
@@ -2950,7 +2950,7 @@ function updateTestInsights() {
     return;
   }
 
-  // Use the new Helios Engine
+  // Usar el nuevo Motor Helios
   if (typeof generateHeliosPyscheReport === 'function') {
     const role = document.getElementById('rolNarrativo')?.value || 'Neutral';
     const animalName = state.animal ? (getAnimalesList().find(a => a.id === state.animal)?.name) : null;
@@ -2967,7 +2967,7 @@ function updateTestInsights() {
 
     container.innerHTML = lines.map(line => `<div class="test-insights-line">${line}</div>`).join('');
   } else {
-    // Fallback if engine not loaded
+    // Respaldo si el motor no se carga
     const sorted = Object.entries(meta).sort((a, b) => b[1] - a[1]);
     const [dominantKey, dominantValue] = sorted[0] || ['logic', 0];
     const dominantLabel = CATEGORY_LABELS[dominantKey] || dominantKey;
@@ -4654,20 +4654,42 @@ window.addEventListener('load', () => {
    INTEGRACIÓN CON GENERADOR DE FICHAS (V2)
    ============================================================ */
 function abrirFichaGenerada() {
+  console.log("Iniciando proceso: abrirFichaGenerada...");
+
   if (typeof DB_FICHA === 'undefined') {
-    alert("Error: No se encontró el módulo de base de datos (db_ficha.js).");
+    const msg = "Error Crítico: No se encontró el módulo de base de datos (db_ficha.js). Verifica que el archivo cargue correctamente.";
+    console.error(msg);
+    alert(msg);
     return;
   }
 
-  // 1. Usar el mapeador para obtener el objeto completo
-  // Pasamos 'state' global que contiene la info de la app
-  const datosFicha = DB_FICHA.generarDatosFicha(state);
+  try {
+    // 1. Usar el mapeador para obtener el objeto completo
+    console.log("Generando datos con DB_FICHA.generarDatosFicha(state)...");
+    if (!state) throw new Error("El estado global 'state' no está definido.");
 
-  // 2. Guardar en LocalStorage con la clave que usa el generador
-  localStorage.setItem('S9U_Ficha_Gen_v2', JSON.stringify(datosFicha));
+    const datosFicha = DB_FICHA.generarDatosFicha(state);
+    console.log("Datos generados correctamente:", datosFicha);
 
-  // 3. Abrir en nueva pestaña
-  window.open('ficha_personaje_final/ficha_a_generar/ficha_completa.html', '_blank');
+    // 2. Guardar en LocalStorage
+    console.log("Guardando en LocalStorage 'S9U_Ficha_Gen_v2'...");
+    localStorage.setItem('S9U_Ficha_Gen_v2', JSON.stringify(datosFicha));
+
+    // 3. Abrir en nueva pestaña
+    const targetUrl = 'ficha_personaje_final/ficha_a_generar/ficha_completa.html';
+    console.log(`Intentando abrir ventana en: ${targetUrl}`);
+
+    const win = window.open(targetUrl, '_blank');
+    if (win) {
+      console.log("Ventana abierta exitosamente.");
+      win.focus();
+    } else {
+      throw new Error("El navegador bloqueó la ventana emergente. Por favor permite pop-ups para este sitio.");
+    }
+  } catch (err) {
+    console.error("Excepción en abrirFichaGenerada:", err);
+    alert("Ocurrió un error al intentar abrir la ficha:\n" + err.message + "\n\nRevisa la consola (F12) para más detalles.");
+  }
 }
 
 // Mostrar botón de ficha completa solo si DB_FICHA está disponible

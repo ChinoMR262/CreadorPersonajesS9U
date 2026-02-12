@@ -1,5 +1,5 @@
 /**
- * HELIOS PSYCHOLOGICAL ENGINE DATABASE (S9U)
+ * BASE DE DATOS DEL MOTOR PSICOLÓGICO HELIOS (S9U)
  * 
  * Este archivo contiene la lógica profunda de análisis de personalidad.
  * Helios utiliza estas estructuras para generar perfiles psicológicos "vanguardistas" y profundos
@@ -13,7 +13,7 @@ const HELIOS_DATA_VERSION = "2.0.0";
 // ============================================================
 // Se activan según el puntaje más alto en el Test de Convergencia.
 const HELIOS_ARCHETYPES = {
-    // LÓGICA (LOGIC)
+    // LÓGICA
     logic: {
         title: "Arquitecto de la Razón",
         archetype: "El Soberano de los Sistemas",
@@ -23,7 +23,7 @@ const HELIOS_ARCHETYPES = {
         slogan: "La verdad es estructura.",
         symbol: "Un cubo de cristal perfecto flotando en el vacío."
     },
-    // EMOCIÓN (EMOTION)
+    // EMOCIÓN
     emotion: {
         title: "Voz de las Corrientes",
         archetype: "El Empático Primordial",
@@ -33,7 +33,7 @@ const HELIOS_ARCHETYPES = {
         slogan: "Sentir es existir.",
         symbol: "Un corazón hecho de agua luminosa."
     },
-    // CREATIVIDAD (CREATIVITY)
+    // CREATIVIDAD
     creativity: {
         title: "Tejedor de Realidades",
         archetype: "El Visionario Caótico",
@@ -43,7 +43,7 @@ const HELIOS_ARCHETYPES = {
         slogan: "Imaginar es crear.",
         symbol: "Una nebulosa de colores cambiantes."
     },
-    // CONFLICTO (CONFLICT)
+    // CONFLICTO
     conflict: {
         title: "Señor de la Voluntad",
         archetype: "El Conquistador Implacable",
@@ -53,7 +53,7 @@ const HELIOS_ARCHETYPES = {
         slogan: "El poder es la única verdad.",
         symbol: "Una espada clavada en una roca partida."
     },
-    // ÉTICA (ETHICS) - (Orden/Justicia)
+    // ÉTICA (Orden/Justicia)
     ethics: {
         title: "Guardián del Equilibrio",
         archetype: "El Juez Incorruptible",
@@ -141,7 +141,7 @@ const HELIOS_TRAIT_DESCRIPTIONS = {
 };
 
 // ============================================================
-// 3. PATRONES DE ANÁLISIS CRUZADO (SYNERGY PATTERNS)
+// 3. PATRONES DE ANÁLISIS CRUZADO (PATRONES DE SINERGIA)
 // ============================================================
 // Genera párrafos narrativos complejos analizando combinaciones de puntajes.
 const HELIOS_PSYCHE_PATTERNS = {
@@ -174,7 +174,7 @@ const HELIOS_PSYCHE_PATTERNS = {
 };
 
 // ============================================================
-// 4. GENERADOR DE LECTURA (Engine)
+// 4. GENERADOR DE LECTURA (Motor)
 // ============================================================
 function generateHeliosPyscheReport(meta, role, animalName) {
     // 1. Determinar Dominante

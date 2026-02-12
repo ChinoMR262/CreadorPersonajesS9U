@@ -618,14 +618,14 @@ const SCENES_ALTERNATIVOS = {
 // - Importante: no se persiste a disco; un reload reinicia todo.
 let state = { rels: [], hobbies: [], detesta: [], deseos: [], rasgos: [], saludos: {}, mbti: { type: '', mode: 'cards', quiz: {}, narrative: {}, ai: '' }, etiquetas: [], historia: null, historiaCompleta: null, heliosStory: null, altura: '', vestimenta: {}, apariencia: { cabello: '', ojos: '', piel: '', alas: '', ropaje: '', extra: '', _auto: true }, habilidades: [], villain: { motivacion: '', objetivo: '', metodos: '', debilidad: '', crueldad: '' }, settings: { useGemini: true, anims: true }, test: {}, testMeta: { logic: 0, emotion: 0, creativity: 0, ethics: 0, conflict: 0 }, projectFocus: 'arte', animal: null, dialogueLogs: {}, relDescCursor: {}, styleHistory: [], heliosResult: null };
 
-// --- Capacitor Preferences Bridge ---
-// Promise that resolves when storage is ready (prefs loaded or verified)
+// --- Puente de Preferencias Capacitor ---
+// Promesa que se resuelve cuando el almacenamiento está listo (preferencias cargadas o verificadas)
 window.storageReady = (async () => {
   try {
     if (window.CapPreferences) {
-      console.log("Capacitor Preferences detected.");
+      console.log("Preferencias de Capacitor detectadas.");
     } else {
-      console.log("Capacitor Preferences NOT detected. Using localStorage.");
+      console.log("Preferencias de Capacitor NO detectadas. Usando localStorage.");
     }
   } catch (e) {
     console.error("Storage checks failed:", e);
@@ -655,7 +655,7 @@ async function saveSettingsToLocalStorage() {
     if (window.CapPreferences) {
       await window.CapPreferences.set({ key: LS_KEY_SETTINGS, value: val });
     }
-    // Always sync to localStorage for rapid access if needed, or backward compat
+    // Siempre sincronizar con localStorage para acceso rápido si es necesario, o compatibilidad inversa
     localStorage.setItem(LS_KEY_SETTINGS, val);
   } catch (e) { console.error("Error saving settings:", e); }
 }
@@ -666,7 +666,7 @@ async function loadSettingsFromLocalStorage() {
       const res = await window.CapPreferences.get({ key: LS_KEY_SETTINGS });
       raw = res.value;
     }
-    // Fallback or legacy load
+    // Carga de respaldo o heredada
     if (!raw) raw = localStorage.getItem(LS_KEY_SETTINGS);
 
     if (!raw) return null;
@@ -749,7 +749,7 @@ function toggleAutosave() {
 }
 
 // ============================================================
-// VILLAIN PRESETS
+// PRESETS DE VILLANO
 // ============================================================
 // Catálogo de opciones (modo Villano) para poblar selects.
 // El flujo es: seleccionar preset -> se convierte en input editable (excepto crueldad).

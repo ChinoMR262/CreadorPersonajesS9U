@@ -1,5 +1,5 @@
 /**
- * STORY GENERATION DATABASE (S9U)
+ * BASE DE DATOS DE GENERACIÓN DE HISTORIAS (S9U)
  * 
  * Sistema de plantillas narrativas para la generación procedural de historias.
  * Soporta inyección de variables:
@@ -87,16 +87,16 @@ const STORY_TEMPLATES = {
     ]
 };
 
-// Función helper para obtener templates (seguro para el navegador)
+// Función auxiliar para obtener plantillas (seguro para el navegador)
 function getStoryTemplate(category, subkey) {
     if (!STORY_TEMPLATES[category]) return [];
 
     // Si la subclave existe, retornarla
     if (STORY_TEMPLATES[category][subkey]) return STORY_TEMPLATES[category][subkey];
 
-    // Fallback inteligente
+    // Respaldo inteligente
     if (category === 'origins') return STORY_TEMPLATES.origins.generic;
-    if (category === 'incidents') return STORY_TEMPLATES.incidents.Neutral; // Default a neutral si falla rol
+    if (category === 'incidents') return STORY_TEMPLATES.incidents.Neutral; // Por defecto a neutral si falla rol
 
     return [];
 }

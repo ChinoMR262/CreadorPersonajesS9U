@@ -16,7 +16,7 @@ try {
     const startIdx = content.indexOf(key);
 
     if (startIdx !== -1) {
-        // Buscar la comilla de cierre desde el final de la key.
+        // Buscar la comilla de cierre desde el final de la clave.
         const contentAfterKey = content.substring(startIdx + key.length);
         const endQuoteIdx = contentAfterKey.indexOf("'");
 

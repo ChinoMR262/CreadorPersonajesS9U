@@ -15,7 +15,7 @@ try {
     const lines = data.split(/\r?\n/);
 
     const newLines = lines.map(line => {
-        // Target the Tortuga line
+        // Apuntar a la línea de Tortuga
         if (line.trim().startsWith("{ id: 'tortuga'") && line.includes("var metadata =")) {
             // The specific line seen in the view_file had a massive string. 
             // We'll just match roughly to be safe, or exact if possible.
@@ -29,7 +29,7 @@ try {
             return "      { id: 'tortuga', emoji: '🐢', name: 'Tortuga Mágica', domains: 'Sabiduría / Tiempo', desc: 'Ente de paciencia eterna. Su concha resguarda los secretos del tiempo mismo. Quienes la han elegido como vínculo desarrollan una calma profunda y una capacidad de resistencia que trasciende las edades.', img: '' },";
         }
 
-        // Target the Dragon line
+        // Apuntar a la línea de Dragón
         if (line.includes("{ id: 'dragon'") && line.includes("data:image")) {
             console.log("Cleaning Dragon line...");
             return "      { id: 'dragon', emoji: '🐉', name: 'Dragón Divino', domains: 'Poder / Eternidad', desc: 'Criatura de fuego y divinidad. Su existencia abarca eras enteras. El vínculo con el Dragón Divino otorga autoridad innata y una presencia que intimida incluso a los seres más poderosos.', img: '' },";
@@ -40,8 +40,8 @@ try {
 
     const newData = newLines.join('\n');
     fs.writeFileSync(filePath, newData, 'utf8');
-    console.log('Successfully sanitized helios_data.js');
+    console.log('helios_data.js sinitizado exitosamente');
 
 } catch (err) {
-    console.error('Error processing file:', err);
+    console.error('Error procesando archivo:', err);
 }

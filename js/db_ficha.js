@@ -1,9 +1,9 @@
 const DB_FICHA = {
     generarDatosFicha: function (s) {
-        // s = state global app
+        // s = estado global de la app
         console.log('DB_FICHA: Generando ficha con estado:', s);
 
-        // Helper safe access mejorado
+        // Ayudante de acceso seguro mejorado
         const get = (path, def = '') => {
             return path && typeof path !== 'undefined' ? path : def;
         };
@@ -82,7 +82,7 @@ const DB_FICHA = {
             resumen_final: get(s.historiaCompleta, get(s.historia, '')),
             resumen_puntos_clave: this.getPuntosClave(s),
             imagen_url: get(s.imagenUrl, ''),
-            
+
             // Datos adicionales para compatibilidad
             genero: get(s.genero, ''),
             apodos: get(s.apodos, ''),
@@ -95,7 +95,7 @@ const DB_FICHA = {
     },
 
     // Funciones auxiliares mejoradas
-    getAlineamiento: function(s) {
+    getAlineamiento: function (s) {
         const rol = s.rolNarrativo || '';
         if (rol.includes('Villano')) return 'Caótico Maligno';
         if (rol.includes('Héroe')) return 'Legal Bueno';
@@ -103,7 +103,7 @@ const DB_FICHA = {
         return 'Neutral';
     },
 
-    getPoderesFromRaza: function(raza) {
+    getPoderesFromRaza: function (raza) {
         const poderesPorRaza = {
             'Humano': 'Adaptabilidad, Determinación',
             'Aquamaris': 'Control del agua, Sanación, Telepatía',
@@ -115,19 +115,19 @@ const DB_FICHA = {
         return poderesPorRaza[raza] || 'Por descubrir';
     },
 
-    getAparienciaFisica: function(s) {
+    getAparienciaFisica: function (s) {
         if (!s.apariencia) return 'Por describir';
-        
+
         const partes = [];
         if (s.apariencia.ropaje) partes.push(`Ropaje: ${s.apariencia.ropaje}`);
         if (s.apariencia.cabello) partes.push(`Cabello: ${s.apariencia.cabello}`);
         if (s.apariencia.ojos) partes.push(`Ojos: ${s.apariencia.ojos}`);
         if (s.apariencia.piel) partes.push(`Piel: ${s.apariencia.piel}`);
-        
+
         return partes.length > 0 ? partes.join(', ') : 'Por describir';
     },
 
-    getRasgosExtra: function(s) {
+    getRasgosExtra: function (s) {
         const rasgos = [];
         if (s.condicion && s.condicion.includes('Ángel')) rasgos.push('Alas angelicales');
         if (s.condicion && s.condicion.includes('Demonio')) rasgos.push('Cuernos, alas demoníacas');
@@ -135,17 +135,17 @@ const DB_FICHA = {
         return rasgos.join(', ') || 'Ninguno';
     },
 
-    getRelacionesFromState: function(s) {
+    getRelacionesFromState: function (s) {
         // Si hay relaciones en el estado, formatearlas
         if (s.relaciones && Array.isArray(s.relaciones)) {
-            return s.relaciones.map(rel => 
+            return s.relaciones.map(rel =>
                 `${rel.nombre || rel.nombreRelacion} (${rel.tipo || 'Desconocido'})`
             ).join('\n');
         }
         return 'Por establecer';
     },
 
-    getPuntosClave: function(s) {
+    getPuntosClave: function (s) {
         const puntos = [];
         if (s.nombre) puntos.push(`Nombre: ${s.nombre}`);
         if (s.rolNarrativo) puntos.push(`Rol: ${s.rolNarrativo}`);
@@ -155,5 +155,5 @@ const DB_FICHA = {
     }
 };
 
-// Export global
+// Exportación global
 window.DB_FICHA = DB_FICHA;
