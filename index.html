@@ -28,10 +28,10 @@
 
       // Comentario: Chequeo de mantenimiento antes de renderizar la app.
       // 1. Verificar Modo Mantenimiento (Archivo y LocalStorage)
-      // We use synchronous XHR for the file check to block immediate rendering if needed, 
-      // though async is better practice, for this startup script simple fetch is okay but we need to await it.
-      // Since we can't top-level await in this IIFE structure easily without making it async, we'll use a promise chain or sync XHR.
-      // For simplicity and blocking behavior, sync XHR is actually safer to prevent app flash.
+      // Usamos XHR síncrono para verificar el archivo y bloquear el renderizado inmediato si es necesario, 
+      // aunque async es mejor práctica, para este script de inicio un simple fetch está bien pero necesitamos esperarlo.
+      // Dado que no podemos usar top-level await en esta estructura IIFE fácilmente sin hacerla async, usaremos una cadena de promesas o XHR síncrono.
+      // Por simplicidad y comportamiento de bloqueo, XHR síncrono es más seguro para evitar parpadeos de la app.
 
       let maintenanceFileActive = false;
       if (!isFile) {
@@ -1162,10 +1162,10 @@
     </div>
   </template>
   <!-- TEMPLATES EMBEBIDOS END -->
-  <!-- Comentario: Scripts externos y lÃ³gica principal. -->
+  <!-- Comentario: Scripts externos y lógica principal. -->
   <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <!-- Helios Data: Ensure this file is present in js directory. Falling back to root if needed. -->
+  <!-- Helios Data: Asegúrese de que este archivo esté presente en el directorio js. Si es necesario, recurra a la raíz. -->
   <script src="js/data/lore_canon.js"></script>
   <script src="js/data/convergence_questions_db.js"></script>
   <script src="js/data/helios_psyche_db.js"></script>
@@ -1173,6 +1173,7 @@
   <script src="js/helios_psyche_data.js"></script>
   <script src="js/story_data.js"></script>
   <script src="js/helios_data.js"></script>
+  <script src="js/db_ficha.js"></script>
   <script src="js/main.js"></script>
   <!-- Comentario: Script del modulo MBTI (archivo reservado, no borrar). -->
   <script src="js/PersonalidadMBTI.js"></script>
@@ -1283,7 +1284,7 @@
       });
     });
   </script>
-  <script src="js/db_ficha.js"></script>
+
 </body>
 
 </html>
